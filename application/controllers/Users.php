@@ -18,8 +18,8 @@ class Users extends CI_Controller {
             $this->load->view('cadastro');
         } else {
             $this->form_validation->set_rules('nome' , 'Nome', 'required');
-            $this->form_validation->set_rules('email' , 'email', 'required');
-            $this->form_validation->set_rules('senha' , 'senha', 'required');
+            $this->form_validation->set_rules('email' , 'Email', 'required');
+            $this->form_validation->set_rules('senha' , 'Senha', 'required');
             if($this->form_validation->run() == FALSE) {
                 $data['st'] = 0;
                 $this->load->view('cadastro', $data);
@@ -27,7 +27,7 @@ class Users extends CI_Controller {
                 $inserir = [
                     'nome' => $this->input->post('nome'),
                     'email' => $this->input->post('email'),
-                    'senha' => password_hash($this->input->post('senha'), PASSWORD_ARGON2ID),
+                    'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
                 ];
                 $this->db->insert('users', $inserir);
                 $data['st'] = 1;
