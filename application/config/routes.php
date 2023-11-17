@@ -54,4 +54,4 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['bd'] = 'users/getusers';
 $route['cadastro']= 'users/setuser';
-$route['entrar'] = 'login/validation';
+$route['entrar'] = 'login';

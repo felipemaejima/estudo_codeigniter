@@ -8,11 +8,8 @@ class Login extends CI_Controller{
         $this->load->library('form_validation');
     }
 
-    public function validation() {
+    public function index() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-
-            file_get_contents("http://localhost/estudo_codeigniter/index.php/entrar")
-
             $this->form_validation->set_rules('user', 'User', 'required');
             $this->form_validation->set_rules('senha', 'Senha', 'required');
             if ($this->form_validation->run() == FALSE) {
