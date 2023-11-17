@@ -14,6 +14,46 @@
             height: 100vh;
         }
     </style>
+    <script>
+        function validar() { 
+                let form = document.getElementById("login-form");
+                let formData = new FormData(form);
+
+                let ajax = new XMLHttpRequest();
+                ajax.open("POST", "<?php echo site_url('login'); ?>", true);
+                ajax.onreadystatechange = () => {
+                    if (ajax.readyState == 4 && ajax.status == 200) {
+                        let response = JSON.parse(ajax.responseText);
+                        let message = response.msg;
+                        console.log(response, message);
+                        if (response.validation === false && response.erro == 'usuario') {
+                            document.querySelector('#user').style.borderColor = "red"; 
+                            document.querySelector('#user').value = "";
+
+                            document.querySelector('#senha').style.borderColor = "red";
+                            document.querySelector('#senha').value = "";
+                            
+                            document.querySelector('#resultado').innerHTML = message;  
+                        } else if (response.validation === false && response.erro == 'senha') { 
+                            document.querySelector('#senha').style.borderColor = "red";
+                            document.querySelector('#senha').value = "";
+
+                            document.querySelector('#resultado').innerHTML = message;
+                        } else { 
+                            document.querySelector('#user').style.borderColor = "green"; 
+                            document.querySelector('#user').value = "";
+
+                            document.querySelector('#senha').style.borderColor = "green";
+                            document.querySelector('#senha').value = "";
+                            
+                            document.querySelector('#resultado').innerHTML = message;  
+                        }
+                    }
+                };
+
+                ajax.send(formData);
+        }
+    </script>
 </head>
 <body>
     <!-- <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
@@ -39,25 +79,31 @@
     }
     ?>
     <div id="login"  class="container d-flex justify-content-center align-items-center">
+    
     <?php 
     
-    echo form_open();
+    echo form_open('', ['id' => 'login-form']);
+
+    echo "<p id='resultado'></p>";
     
     echo form_label('Usuário', 'user');
     echo form_input([
     'name' => 'user', 
+    'id' => 'user',
     'class' => 'form-control'    
     ]);
+    
     echo "<br />";
     echo form_label('Senha', 'senha');
     echo form_password([
     'name' => 'senha', 
+    'id' => 'senha',
     'class' => 'form-control'    
     ]);
     echo "<br />";
     echo form_button([
         'class' => 'btn btn-primary', 
-        'type' => 'submit', 
+        'onclick' => 'validar()',
         'content' => 'Entrar'
 
     ]);

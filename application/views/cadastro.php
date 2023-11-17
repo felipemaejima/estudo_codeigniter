@@ -14,6 +14,27 @@
             height: 100vh;
         }
     </style>
+    <script>
+        function cadastrar() { 
+                let form = document.getElementById("cadastro-form");
+                let formData = new FormData(form);
+
+                let ajax = new XMLHttpRequest();
+                ajax.open("POST", "<?php echo site_url('users/setuser'); ?>", true);
+                ajax.onreadystatechange = () => {
+                    if (ajax.readyState == 4 && ajax.status == 200) {
+                        let response = JSON.parse(ajax.responseText);
+                        console.log(response);
+                        document.querySelector('#erroNome').innerHTML = strip_tags(response.error_nome);
+                        document.querySelector('#erroEmail').innerHTML = strip_tags(response.error_email);
+                        document.querySelector('#erroSenha').innerHTML = strip_tags(response.error_senha);
+                        document.querySelector('#erroCs').innerHTML = strip_tags(response.error_cs);
+                    }
+                };
+
+                ajax.send(formData);
+        }
+    </script>
 </head>
 <body>
     <!-- <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
@@ -34,6 +55,7 @@
         </form>
     </div> -->
     <?php 
+    echo (isset($error) ? $error : "");
     if(isset($st)) {
         if($st == 1){
             echo "sucesso na validação";
@@ -45,30 +67,42 @@
     <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
     <?php 
     
-    echo form_open();
+    echo form_open('', ['id' => 'cadastro-form']);
     
     echo form_label('Nome', 'nome');
     echo form_input([
     'name' => 'nome', 
-    'class' => 'form-control'    
+    'class' => 'form-control',
+    'value' => !!$this->input->post('nome') ? $this->input->post('nome') : ""   
     ]);
+    echo "<span id='erroNome' style='color: red;'></span>";
     echo "<br />";
     echo form_label('Email', 'email');
     echo form_input([
     'name' => 'email', 
     'type' => 'email',
-    'class' => 'form-control'    
+    'class' => 'form-control'  ,
+    'value' => !!$this->input->post('email') ? $this->input->post('email') : ""  
     ]);
+    echo "<span id='erroEmail' style='color: red;'></span>";
     echo "<br />";
     echo form_label('Senha', 'senha');
     echo form_password([
     'name' => 'senha', 
     'class' => 'form-control'    
     ]);
+    echo "<span id='erroSenha' style='color: red;'></span>";
+    echo "<br />";
+    echo form_label('Repita a senha', 'senha');
+    echo form_password([
+    'name' => 'confirmacao-senha',
+    'class' => 'form-control'    
+    ]);
+    echo "<span id='erroCs' style='color: red;'></span>";
     echo "<br />";
     echo form_button([
         'class' => 'btn btn-primary', 
-        'type' => 'submit', 
+        'onclick' => 'cadastrar()',
         'content' => 'Cadastrar'
 
     ]);

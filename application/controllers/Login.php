@@ -13,8 +13,11 @@ class Login extends CI_Controller{
             $this->form_validation->set_rules('user', 'User', 'required');
             $this->form_validation->set_rules('senha', 'Senha', 'required');
             if ($this->form_validation->run() == FALSE) {
-                $data['validation'] = 'usuário não encontrado!';
-                $this->load->view('login', $data);
+                echo json_encode([
+                    'validation' => FALSE, 
+                    'msg' => "Preencha todos os campos!",
+                    'erro' => 'usuario'
+                ]);
             } else {
                 $user = $this->input->post('user');
                 $senha = $this->input->post('senha');
@@ -25,11 +28,16 @@ class Login extends CI_Controller{
                         ->get()->result_array();
                 $senha_hash = $userdb['senha'];
                 if (password_verify($senha, $senha_hash)) {
-                    $data['validation'] = "login correto!";
-                    $this->load->view('login' , $data);
+                    echo json_encode([
+                        'validation' => TRUE,
+                        'msg' => 'Validado!'
+                ]);
                 } else {
-                    $data['validation'] = 'senha inválida!';
-                    $this->load->view('login' , $data);
+                    echo json_encode([
+                        'validation' => FALSE,
+                        'msg' => 'Senha inválida!',
+                        'erro' => 'senha'
+                    ]);
                 }
             }
         } else {

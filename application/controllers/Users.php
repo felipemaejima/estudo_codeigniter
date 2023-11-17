@@ -14,15 +14,22 @@ class Users extends CI_Controller {
     }
 
     public function setUser() {
-        if ($this->input->server('REQUEST_METHOD') == 'GET') {
-            $this->load->view('cadastro');
-        } else {
-            $this->form_validation->set_rules('nome' , 'Nome', 'required');
-            $this->form_validation->set_rules('email' , 'Email', 'required');
-            $this->form_validation->set_rules('senha' , 'Senha', 'required');
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $this->form_validation->set_rules('nome' , 'Nome', 'required|is_unique[users.nome]' , [
+                'is_unique' => "Nome de usuário já existente"
+            ]);
+            $this->form_validation->set_rules('email' , 'Email', 'required|is_unique[users.email]|valid_email', [
+                'is_unique' => "E-mail já cadastrado"
+            ]);
+            $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
+            $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
             if($this->form_validation->run() == FALSE) {
-                $data['st'] = 0;
-                $this->load->view('cadastro', $data);
+                echo json_encode([
+                    'error_nome' => form_error('nome'),
+                    'error_email' => form_error('email'),
+                    'error_senha' => form_error('senha'),
+                    'error_cs' => form_error('confirmacao-senha')
+                ]);
             } else {
                 $inserir = [
                     'nome' => $this->input->post('nome'),
@@ -33,6 +40,8 @@ class Users extends CI_Controller {
                 $data['st'] = 1;
                 $this->load->view('cadastro', $data);
             } 
+        } else {
+            $this->load->view('cadastro');
         }
     }
 }
