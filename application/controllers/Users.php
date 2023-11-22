@@ -6,6 +6,9 @@ class Users extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        if ($this->session->userdata('user_id')) {
+            redirect('index');
+        }
     }
 
 	public function getUsers() { 
@@ -15,9 +18,7 @@ class Users extends CI_Controller {
 
     public function setUser() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            $this->form_validation->set_rules('nome' , 'Nome', 'required|is_unique[users.nome]' , [
-                'is_unique' => "Nome de usuário já existente."
-            ]);
+            $this->form_validation->set_rules('nome' , 'Nome', 'required');
             $this->form_validation->set_rules('email' , 'Email', 'required|is_unique[users.email]|valid_email', [
                 'is_unique' => "E-mail já cadastrado."
             ]);
@@ -38,10 +39,16 @@ class Users extends CI_Controller {
                     'email' => $this->input->post('email'),
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
                 ];
-                $this->db->insert('users', $inserir);
-                echo json_encode([
-                    'redirect' => site_url('index')
-                ]);
+                $query = $this->db->insert('users', $inserir);
+
+                if($query){
+                    $newUser = $this->db->select('id')->from('users')->where('email', $this->input->post('email'))->get()->result();
+                    list($row) = $newUser;
+                    $this->session->set_userdata('user_id', $row->id); 
+                    echo json_encode([
+                        'redirect' => site_url('index')
+                    ]);
+                }
             } 
         } else {
            $this->load->view('cadastro');

@@ -13,6 +13,12 @@
         #cadastro { 
             height: 100vh;
         }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline; 
+        }
     </style>
     <script>
         function cadastrar() { 
@@ -22,6 +28,7 @@
                 let ajax = new XMLHttpRequest();
                 ajax.open("POST", "<?php echo site_url('users/setuser'); ?>", true);
                 ajax.onreadystatechange = () => {
+                    console.log(ajax.responseText);
                     let response = JSON.parse(ajax.responseText);
                     if (ajax.readyState == 4 && ajax.status == 400) {
                         document.querySelector("input[name='csrf_token']").value = response.csrf;
@@ -55,16 +62,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div> -->
-    <?php 
-    echo (isset($error) ? $error : "");
-    if(isset($st)) {
-        if($st == 1){
-            echo "sucesso na validação";
-        } else { 
-            echo "Erro na validação";
-        }
-    }
-    ?>
     <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
     <?php 
     
@@ -101,6 +98,9 @@
     ]);
     echo "<span id='erroCs' style='color: red;'></span>";
     echo "<br />";
+    ?>
+    <span>Já tem uma conta? <a href="<?php echo site_url('entrar')?>">Entre!</a></span><br>
+    <?php 
     echo "<br />";
     echo form_button([
         'class' => 'btn btn-primary', 

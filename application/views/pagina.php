@@ -6,7 +6,10 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Entrou!</h1>
-    <a href="<?php echo site_url('logout') ?>">Deslogar</a>
+    <h1>Olá <?php
+     list($row) = $this->db->select('nome')->from('users')->where('id', $this->session->userdata('user_id'))->get()->result(); 
+     echo $row->nome;
+    ?>!</h1> <br>
+    <a href="<?php echo site_url('logout'); ?>">Deslogar</a>
 </body>
 </html>

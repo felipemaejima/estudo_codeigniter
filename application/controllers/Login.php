@@ -6,7 +6,9 @@ class Login extends CI_Controller{
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
-        // $this->session->sess_destroy();
+        if ($this->session->userdata('user_id')) {
+            redirect('index');
+        }
     }
 
     public function index() {
@@ -23,7 +25,7 @@ class Login extends CI_Controller{
             } else {
                 $user = $this->input->post('user');
                 $senha = $this->input->post('senha');
-                $userdb = $this->db->select('senha', 'id')
+                $userdb = $this->db->select('*')
                                 ->from('users')
                                 ->where('nome', $user)
                                 ->or_where('email', $user)
@@ -32,10 +34,10 @@ class Login extends CI_Controller{
                 if ($userdb) {
                     $senha_hash = $userdb['senha'];
                         if (password_verify($senha, $senha_hash)) {   
-                            $this->session->set_userdata('user_id', 1);       
+                            $this->session->set_userdata('user_id', $userdb['id']);
                             echo json_encode([
                                 'redirect' => site_url('index')
-                        ]);
+                            ]);
                         } else {
                             $this->output->set_status_header(400);
                             echo json_encode([

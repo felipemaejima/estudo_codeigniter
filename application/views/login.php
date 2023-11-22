@@ -13,6 +13,12 @@
         #login { 
             height: 100vh;
         }
+        a {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline; 
+        }
     </style>
     <script>
         function validar() { 
@@ -22,7 +28,6 @@
                 let ajax = new XMLHttpRequest();
                 ajax.open("POST", "<?php echo site_url('login'); ?>", true);
                 ajax.onreadystatechange = () => {
-                    console.log(ajax.responseText);
                     if (ajax.readyState == 4 && ajax.status == 400) {
                         let response = JSON.parse(ajax.responseText);
                         document.querySelector("input[name='csrf_token']").value = response.csrf;
@@ -32,7 +37,6 @@
                         let response = JSON.parse(ajax.responseText);
                         window.location.href = response.redirect;
                     }
-                    console.log(response);
                 };
                 
                 ajax.send(formData);
@@ -84,6 +88,9 @@
 
     echo "<span id='erroSenha' style='color: red;'></span>";
     echo "<br />";
+    ?>
+    <span>Não tem acesso? <a href="<?php echo site_url('cadastro')?>">Cadastre-se!</a></span><br>
+    <?php
     echo "<br />";
 
     echo form_button([
