@@ -6,37 +6,48 @@ class Login extends CI_Controller{
     public function __construct() {
         parent::__construct();
         $this->load->library('form_validation');
+        // $this->session->sess_destroy();
     }
 
     public function index() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
-            $this->form_validation->set_rules('user', 'User', 'required');
+            $this->form_validation->set_rules('user', 'Usuário', 'required');
             $this->form_validation->set_rules('senha', 'Senha', 'required');
             if ($this->form_validation->run() == FALSE) {
+                $this->output->set_status_header(400);
                 echo json_encode([
-                    'validation' => FALSE, 
-                    'msg' => "Preencha todos os campos!",
-                    'erro' => 'usuario'
+                    'error_user' => strip_tags(form_error('user')), 
+                    'error_senha' => strip_tags(form_error('senha')),
+                    'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else {
                 $user = $this->input->post('user');
                 $senha = $this->input->post('senha');
-                [$userdb] = $this->db->select('senha')
-                        ->from('users')
-                        ->where('nome', $user)
-                        ->or_where('email', $user)
-                        ->get()->result_array();
-                $senha_hash = $userdb['senha'];
-                if (password_verify($senha, $senha_hash)) {
+                $userdb = $this->db->select('senha', 'id')
+                                ->from('users')
+                                ->where('nome', $user)
+                                ->or_where('email', $user)
+                                ->get()->result_array();
+                [$userdb] = $userdb ? $userdb : [null];
+                if ($userdb) {
+                    $senha_hash = $userdb['senha'];
+                        if (password_verify($senha, $senha_hash)) {   
+                            $this->session->set_userdata('user_id', 1);       
+                            echo json_encode([
+                                'redirect' => site_url('index')
+                        ]);
+                        } else {
+                            $this->output->set_status_header(400);
+                            echo json_encode([
+                                'error_senha' => 'Senha inválida!',
+                                'csrf' => $this->security->get_csrf_hash()
+                            ]);
+                        }
+                } else { 
+                    $this->output->set_status_header(400);
                     echo json_encode([
-                        'validation' => TRUE,
-                        'msg' => 'Validado!'
-                ]);
-                } else {
-                    echo json_encode([
-                        'validation' => FALSE,
-                        'msg' => 'Senha inválida!',
-                        'erro' => 'senha'
+                        'error_user' => "Usuário não existe.",
+                        'csrf' => $this->security->get_csrf_hash()
                     ]);
                 }
             }

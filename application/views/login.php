@@ -22,35 +22,19 @@
                 let ajax = new XMLHttpRequest();
                 ajax.open("POST", "<?php echo site_url('login'); ?>", true);
                 ajax.onreadystatechange = () => {
-                    if (ajax.readyState == 4 && ajax.status == 200) {
+                    console.log(ajax.responseText);
+                    if (ajax.readyState == 4 && ajax.status == 400) {
                         let response = JSON.parse(ajax.responseText);
-                        let message = response.msg;
-                        console.log(response, message);
-                        if (response.validation === false && response.erro == 'usuario') {
-                            document.querySelector('#user').style.borderColor = "red"; 
-                            document.querySelector('#user').value = "";
-
-                            document.querySelector('#senha').style.borderColor = "red";
-                            document.querySelector('#senha').value = "";
-                            
-                            document.querySelector('#resultado').innerHTML = message;  
-                        } else if (response.validation === false && response.erro == 'senha') { 
-                            document.querySelector('#senha').style.borderColor = "red";
-                            document.querySelector('#senha').value = "";
-
-                            document.querySelector('#resultado').innerHTML = message;
-                        } else { 
-                            document.querySelector('#user').style.borderColor = "green"; 
-                            document.querySelector('#user').value = "";
-
-                            document.querySelector('#senha').style.borderColor = "green";
-                            document.querySelector('#senha').value = "";
-                            
-                            document.querySelector('#resultado').innerHTML = message;  
-                        }
+                        document.querySelector("input[name='csrf_token']").value = response.csrf;
+                        document.querySelector('#erroUser').innerHTML = response.error_user || "" ;
+                        document.querySelector('#erroSenha').innerHTML = response.error_senha || "";
+                    } else if (ajax.readyState == 4 && ajax.status == 200){
+                        let response = JSON.parse(ajax.responseText);
+                        window.location.href = response.redirect;
                     }
+                    console.log(response);
                 };
-
+                
                 ajax.send(formData);
         }
     </script>
@@ -73,11 +57,6 @@
         <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div> -->
-    <?php 
-    if(isset($validation)) {
-        echo $validation;
-    }
-    ?>
     <div id="login"  class="container d-flex justify-content-center align-items-center">
     
     <?php 
@@ -93,14 +72,20 @@
     'class' => 'form-control'    
     ]);
     
+    echo "<span id='erroUser' style='color: red;'></span>";
     echo "<br />";
+
     echo form_label('Senha', 'senha');
     echo form_password([
     'name' => 'senha', 
     'id' => 'senha',
     'class' => 'form-control'    
     ]);
+
+    echo "<span id='erroSenha' style='color: red;'></span>";
     echo "<br />";
+    echo "<br />";
+
     echo form_button([
         'class' => 'btn btn-primary', 
         'onclick' => 'validar()',

@@ -16,19 +16,21 @@ class Users extends CI_Controller {
     public function setUser() {
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('nome' , 'Nome', 'required|is_unique[users.nome]' , [
-                'is_unique' => "Nome de usuário já existente"
+                'is_unique' => "Nome de usuário já existente."
             ]);
             $this->form_validation->set_rules('email' , 'Email', 'required|is_unique[users.email]|valid_email', [
-                'is_unique' => "E-mail já cadastrado"
+                'is_unique' => "E-mail já cadastrado."
             ]);
             $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
             $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
             if($this->form_validation->run() == FALSE) {
+                $this->output->set_status_header(400);
                 echo json_encode([
-                    'error_nome' => form_error('nome'),
-                    'error_email' => form_error('email'),
-                    'error_senha' => form_error('senha'),
-                    'error_cs' => form_error('confirmacao-senha')
+                    'error_nome' => strip_tags(form_error('nome')),
+                    'error_email' => strip_tags(form_error('email')),
+                    'error_senha' => strip_tags(form_error('senha')),
+                    'error_cs' =>strip_tags(form_error('confirmacao-senha')),
+                    'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else {
                 $inserir = [
@@ -37,11 +39,12 @@ class Users extends CI_Controller {
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
                 ];
                 $this->db->insert('users', $inserir);
-                $data['st'] = 1;
-                $this->load->view('cadastro', $data);
+                echo json_encode([
+                    'redirect' => site_url('index')
+                ]);
             } 
         } else {
-            $this->load->view('cadastro');
+           $this->load->view('cadastro');
         }
     }
 }
