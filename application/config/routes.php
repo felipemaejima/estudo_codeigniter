@@ -57,3 +57,4 @@ $route['cadastro']= 'users/setuser';
 $route['index'] = 'pages';
 $route['entrar'] = 'login';
 $route['logout'] = 'logout';
+$route['users/deleteuser/(:num)'] = 'users/deleteuser';

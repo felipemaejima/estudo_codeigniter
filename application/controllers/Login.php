@@ -25,7 +25,7 @@ class Login extends CI_Controller{
             } else {
                 $user = $this->input->post('user');
                 $senha = $this->input->post('senha');
-                $userdb = $this->db->select('*')
+                $userdb = $this->db->select('senha, id')
                                 ->from('users')
                                 ->where('nome', $user)
                                 ->or_where('email', $user)

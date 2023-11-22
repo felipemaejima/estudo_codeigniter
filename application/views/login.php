@@ -26,7 +26,7 @@
                 let formData = new FormData(form);
 
                 let ajax = new XMLHttpRequest();
-                ajax.open("POST", "<?php echo site_url('login'); ?>", true);
+                ajax.open("POST", "<?php echo site_url('users/deleteuser'); ?>", true);
                 ajax.onreadystatechange = () => {
                     if (ajax.readyState == 4 && ajax.status == 400) {
                         let response = JSON.parse(ajax.responseText);

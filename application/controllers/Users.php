@@ -54,4 +54,22 @@ class Users extends CI_Controller {
            $this->load->view('cadastro');
         }
     }
+    public function deleteUser($id) { 
+        if ($this->input->server('REQUEST_METHOD') == "DELETE") {
+            $id = $this->uri->getSegment(2);
+            // $del = $this->db->delete('users' , ['id' => $id]);
+            $del = null;
+            if ($del){
+                echo json_encode([
+                    'st' => 1 ,
+                    'id' => $id
+                ]);
+            } else {
+                echo json_encode([
+                    'st' => 0 ,
+                    'id' => $id
+                ]);
+            }
+        }
+    }
 }
