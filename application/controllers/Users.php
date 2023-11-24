@@ -1,22 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Users extends CI_Controller {
+require_once 'My_Controller.php';
+
+class Users extends My_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->library('form_validation');
-        if ($this->session->userdata('user_id')) {
-            redirect('index');
-        }
-    }
-
-	public function getUsers() { 
-        $data['users'] = $this->db->get('users')->result_array();
-        $this->load->view('index' , $data);
     }
 
     public function setUser() {
+        if ($this->session->userdata('user_id')) {
+            redirect('index');
+        }
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('nome' , 'Nome', 'required');
             $this->form_validation->set_rules('email' , 'Email', 'required|is_unique[users.email]|valid_email', [
@@ -26,11 +22,12 @@ class Users extends CI_Controller {
             $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
             if($this->form_validation->run() == FALSE) {
                 $this->output->set_status_header(400);
+                $this->form_validation->set_error_delimiters('','');
                 echo json_encode([
-                    'error_nome' => strip_tags(form_error('nome')),
-                    'error_email' => strip_tags(form_error('email')),
-                    'error_senha' => strip_tags(form_error('senha')),
-                    'error_cs' =>strip_tags(form_error('confirmacao-senha')),
+                    'error_nome' => form_error('nome'),
+                    'error_email' => form_error('email'),
+                    'error_senha' => form_error('senha'),
+                    'error_cs' => form_error('confirmacao-senha'),
                     'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else {
@@ -38,6 +35,7 @@ class Users extends CI_Controller {
                     'nome' => $this->input->post('nome'),
                     'email' => $this->input->post('email'),
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
+                    'tipo_usuario' => 3
                 ];
                 $query = $this->db->insert('users', $inserir);
 
@@ -54,22 +52,95 @@ class Users extends CI_Controller {
            $this->load->view('cadastro');
         }
     }
-    public function deleteUser($id) { 
-        if ($this->input->server('REQUEST_METHOD') == "DELETE") {
-            $id = $this->uri->getSegment(2);
-            // $del = $this->db->delete('users' , ['id' => $id]);
-            $del = null;
-            if ($del){
+
+    public function deleteUser() { 
+        if (!$this->session->userdata('user_id')) {
+            redirect('entrar');
+        } 
+        if($this->input->server('REQUEST_METHOD') == 'POST') {
+            $id = $this->uri->segment(2);
+            //Apagando registro diretamente
+                // 
+                // $del = $this->db->delete('users', [ 'id' => $id]);
+    
+                // if ($del) {
+                //     echo json_encode([
+                //         'msg' => "Registro apagado com sucesso!"
+                //     ]);
+                // } else { 
+                //     echo json_encode([
+                //         'msg' => "O registro não foi apagado!"
+                //     ]);
+                // }
+            
+            // Apagando com coluna st_usuario (0 ou 1)    
+            $del = $this->db->set('st_usuario', 0)
+                     ->where('id', $id)
+                     ->update('users');      
+            if($del) { 
                 echo json_encode([
-                    'st' => 1 ,
-                    'id' => $id
+                    'msg' => "Registro apagado com sucesso!"
                 ]);
-            } else {
+            } else { 
                 echo json_encode([
-                    'st' => 0 ,
-                    'id' => $id
+                    'msg' => "O registro não foi apagado!"
                 ]);
             }
+        }
+    }
+
+    public function editUser() {
+        if (!$this->session->userdata('user_id')) {
+            redirect('entrar');
+        } 
+        $id = $this->uri->segment(2);
+        if($this->input->server('REQUEST_METHOD') == 'POST') {
+            $attData = [];
+            $this->form_validation->set_rules('user' , 'Usuário', 'required');
+            $this->form_validation->set_rules('email' , 'Email', 'required|valid_email', [
+                'is_unique' => "E-mail já cadastrado."
+            ]);
+            if($this->input->post('senha')) { 
+                $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
+                $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
+                $attData['senha'] = $this->input->post('senha'); 
+            }
+            
+            if($this->form_validation->run() == FALSE) {
+                $this->output->set_status_header(400);
+                $this->form_validation->set_error_delimiters('','');
+                echo json_encode([
+                    'error_nome' => form_error('nome'),
+                    'error_email' => form_error('email'),
+                    'error_senha' => form_error('senha'),
+                    'error_cs' => form_error('confirmacao-senha'),
+                    'csrf' => $this->security->get_csrf_hash()
+                ]);
+            } else { 
+                $attData = array_merge($attData, [
+                    'nome' => $this->input->post('user'),
+                    'email' => $this->input->post('email') 
+                ]);
+                $att = $this->db->set($attData)
+                ->where('id', $id)
+                ->update('users');      
+                if($att) { 
+                    echo json_encode([
+                        'msg' => "Registro editado com sucesso!",
+                    ]);
+                } else { 
+                    echo json_encode([
+                        'msg' => "O registro não foi editado!",
+                        'csrf' => $this->security->get_csrf_hash()
+                    ]);
+                }
+            }
+        }else { 
+            $data['edit_user'] = $this->db->select("id , nome, email")
+                                        ->from('users')
+                                        ->where('id', $id)
+                                        ->get()->result();
+            $this->load->view('editar', $data);
         }
     }
 }

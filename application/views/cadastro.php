@@ -28,16 +28,17 @@
                 let ajax = new XMLHttpRequest();
                 ajax.open("POST", "<?php echo site_url('users/setuser'); ?>", true);
                 ajax.onreadystatechange = () => {
-                    console.log(ajax.responseText);
-                    let response = JSON.parse(ajax.responseText);
                     if (ajax.readyState == 4 && ajax.status == 400) {
+                        let response = JSON.parse(ajax.responseText);
                         document.querySelector("input[name='csrf_token']").value = response.csrf;
                         document.querySelector('#erroNome').innerHTML = response.error_nome;
                         document.querySelector('#erroEmail').innerHTML = response.error_email;
                         document.querySelector('#erroSenha').innerHTML = response.error_senha;
                         document.querySelector('#erroCs').innerHTML = response.error_cs;
                     } else if (ajax.readyState == 4 && ajax.status == 200) {
+                        let response = JSON.parse(ajax.responseText);
                         window.location.href = response.redirect;
+                        
                     }
                 };
                 ajax.send(formData);

@@ -1,7 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pages extends CI_Controller {
+require_once 'My_Controller.php';
+
+class Pages extends My_Controller {
     public function __construct(){
         parent::__construct(); 
         if(!$this->session->userdata('user_id')) { 
@@ -20,7 +22,9 @@ class Pages extends CI_Controller {
         $dadosPermitidos = $this->db->select('id , nome, email, tipo_usuario')
                                     ->from('users')
                                     ->where('tipo_usuario >', $row->id_tipo )
-                                    ->or_where('id' , $this->session->userdata('user_id'))->get()->result();
+                                    ->where('st_usuario', 1)
+                                    ->or_where('id' , $this->session->userdata('user_id'))
+                                    ->get()->result();
         $data['dados_permitidos'] = $dadosPermitidos;                            
         $this->load->view('pagina', $data);
     }

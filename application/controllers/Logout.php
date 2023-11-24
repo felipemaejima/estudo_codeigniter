@@ -1,7 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Logout extends CI_Controller{ 
+require_once 'My_Controller.php';
+
+class Logout extends My_Controller{ 
     
     public function index() {
         if ($this->session->userdata('user_id')) {

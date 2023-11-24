@@ -26,7 +26,7 @@
                 let formData = new FormData(form);
 
                 let ajax = new XMLHttpRequest();
-                ajax.open("POST", "<?php echo site_url('users/deleteuser'); ?>", true);
+                ajax.open("POST", "<?php echo site_url('login'); ?>", true);
                 ajax.onreadystatechange = () => {
                     if (ajax.readyState == 4 && ajax.status == 400) {
                         let response = JSON.parse(ajax.responseText);
@@ -66,8 +66,6 @@
     <?php 
     
     echo form_open('', ['id' => 'login-form']);
-
-    echo "<p id='resultado'></p>";
     
     echo form_label('Usuário', 'user');
     echo form_input([

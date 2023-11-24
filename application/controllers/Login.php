@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller{ 
+require_once 'My_Controller.php';
+
+class Login extends My_Controller{ 
     
     public function __construct() {
         parent::__construct();
-        $this->load->library('form_validation');
         if ($this->session->userdata('user_id')) {
             redirect('index');
         }
