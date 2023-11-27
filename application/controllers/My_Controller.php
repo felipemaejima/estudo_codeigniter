@@ -8,7 +8,12 @@ class My_Controller extends CI_Controller{
         $this->load->library('form_validation');
     }
 
-    public function my_header($header, $data) {
+    protected function my_header($data) {
+        // title, scripts, dados, styles (apenas title é parametro obrigatório)
+
+        $data['title'] = isset($data['title']) ? $data['title'] : 'Sem título'; 
         
+
+        $this->load->view('header/header', $data);
     }
 }

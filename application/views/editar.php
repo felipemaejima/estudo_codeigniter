@@ -1,13 +1,3 @@
-    <style>
-        form { 
-            max-width: 300px;
-            min-width: 300px;
-        }
-        #edit { 
-            height: 100vh;
-        }
-    </style>
-</head>
 <body>
     <div id="edit"  class="container d-flex justify-content-center align-items-center">
     

@@ -26,9 +26,10 @@ class Pages extends My_Controller {
                                     ->or_where('id' , $this->session->userdata('user_id'))
                                     ->get()->result();
         $data['dados_permitidos'] = $dadosPermitidos; 
-        $data['title'] = "Página inicial";
+        $data['title'] = 'Página Inicial'; 
+        $data['scripts'] = ['ajxApaga'];
 
-        $this->load->view('header/header' , $data);                           
+        $this->my_header($data);                         
         $this->load->view('pagina');
         $this->load->view('footer/footer');
     }

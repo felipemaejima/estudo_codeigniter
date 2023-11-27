@@ -1,0 +1,38 @@
+/* formatações da view login */
+form#login-form { 
+    max-width: 300px;
+    min-width: 300px;
+}
+#login { 
+    height: 100vh;
+}
+#login a {
+    text-decoration: none;
+}
+#login a:hover {
+    text-decoration: underline; 
+}
+
+/* formatações da view editar */
+form#edit-form { 
+    max-width: 300px;
+    min-width: 300px;
+}
+#edit { 
+    height: 100vh;
+}
+
+/* formatações da view cadastro */
+form { 
+    max-width: 300px;
+    min-width: 300px;
+}
+#cadastro { 
+    height: 100vh;
+}
+a {
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline; 
+}

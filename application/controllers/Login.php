@@ -55,9 +55,12 @@ class Login extends My_Controller{
                 }
             }
         } else {
-            $data['title'] = "Entrar";
-            
-            $this->load->view('header/header', $data);
+            $data = [
+                'title' => "Entrar", 
+                'scripts' => ['ajxLogin'],
+                'styles' => ['style']
+            ]; 
+            $this->my_header($data);
             $this->load->view('login');
             $this->load->view('footer/footer');
         }

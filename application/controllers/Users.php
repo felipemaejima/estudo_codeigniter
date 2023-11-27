@@ -49,8 +49,11 @@ class Users extends My_Controller {
                 }
             } 
         } else {
-            $data['title'] = "Cadastro";
-            $this->load->view('header/header', $data); 
+            $this->my_header([
+                'title' => "Cadastro", 
+                'scripts' => ['ajxCadastra'], 
+                'styles' => ['style']
+            ]);
             $this->load->view('cadastro');
             $this->load->view('footer/footer');
         }
@@ -82,11 +85,13 @@ class Users extends My_Controller {
                      ->update('users');      
             if($del) { 
                 echo json_encode([
-                    'msg' => "Registro apagado com sucesso!"
+                    'msg' => "Registro apagado com sucesso!",
+                    'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else { 
                 echo json_encode([
-                    'msg' => "O registro não foi apagado!"
+                    'msg' => "O registro não foi apagado!", 
+                    'csrf' => $this->security->get_csrf_hash()
                 ]);
             }
         }
@@ -143,9 +148,12 @@ class Users extends My_Controller {
                                         ->from('users')
                                         ->where('id', $id)
                                         ->get()->result();
-            $data['title'] = "Editar Usuário";
-
-            $this->load->view('header/header', $data); 
+            $data = array_merge($data, [
+                'title' => 'Editar Usuário', 
+                'scripts' => ['ajxEdita'],
+                'style' => ['style']
+            ]);
+            $this->my_header($data);
             $this->load->view('editar');
             $this->load->view('footer/footer');
         }

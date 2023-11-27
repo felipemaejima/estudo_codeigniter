@@ -11,6 +11,8 @@ function apagaUsuario(id) {
             processData: false,
             contentType: false
         }).done( (res) => {
+            let response = JSON.parse(res);
+            token = response.csrf;
             $(`#user${id}`).remove();
         }) 
     }
@@ -20,44 +22,44 @@ function cadastrar() {
     let form = document.getElementById("cadastro-form");
     let formData = new FormData(form);
 
-    let ajax = new XMLHttpRequest();
-    ajax.open("POST", urlCadastro, true);
-    ajax.onreadystatechange = () => {
-        if (ajax.readyState == 4 && ajax.status == 400) {
-            let response = JSON.parse(ajax.responseText);
-            document.querySelector("input[name='csrf_token']").value = response.csrf;
-            document.querySelector('#erroNome').innerHTML = response.error_nome;
-            document.querySelector('#erroEmail').innerHTML = response.error_email;
-            document.querySelector('#erroSenha').innerHTML = response.error_senha;
-            document.querySelector('#erroCs').innerHTML = response.error_cs;
-        } else if (ajax.readyState == 4 && ajax.status == 200) {
-            let response = JSON.parse(ajax.responseText);
-            window.location.href = response.redirect;
-            
-        }
-    };
-    ajax.send(formData);
-    }
+    $.ajax({
+        method: "POST", 
+        url: urlCadastro, 
+        data: formData, 
+        processData: false,
+        contentType: false
+    }).done( res => { 
+        let response = JSON.parse(res); 
+        window.location.href = response.redirect;
+    }).fail( res => { 
+        let response = JSON.parse(res.responseText);
+        $("input[name='csrf_token']").val(response.csrf);
+        $('#erroNome').html(response.error_nome);
+        $('#erroEmail').html(response.error_email);
+        $('#erroSenha').html(response.error_senha);
+        $('#erroCs').html(response.error_cs);
+    })
+}
 
 function validar() { 
     let form = document.getElementById("login-form");
     let formData = new FormData(form);
 
-    let ajax = new XMLHttpRequest();
-    ajax.open("POST", urlLogin, true);
-    ajax.onreadystatechange = () => {
-        if (ajax.readyState == 4 && ajax.status == 400) {
-            let response = JSON.parse(ajax.responseText);
-            document.querySelector("input[name='csrf_token']").value = response.csrf;
-            document.querySelector('#erroUser').innerHTML = response.error_user || "" ;
-            document.querySelector('#erroSenha').innerHTML = response.error_senha || "";
-        } else if (ajax.readyState == 4 && ajax.status == 200){
-            let response = JSON.parse(ajax.responseText);
-            window.location.href = response.redirect;
-        }
-    };
-    
-    ajax.send(formData);
+    $.ajax({
+        method: "POST", 
+        url: urlLogin, 
+        data: formData, 
+        processData: false,
+        contentType: false
+    }).done( res => { 
+        let response = JSON.parse(res); 
+        window.location.href = response.redirect;
+    }).fail( res => { 
+        let response = JSON.parse(res.responseText);
+        $("input[name='csrf_token']").val(response.csrf);
+        $('#erroUser').html(response.error_user);
+        $('#erroSenha').html(response.error_senha);
+    })
 }
 
 function editaUsuario(id) {
