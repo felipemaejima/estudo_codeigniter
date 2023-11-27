@@ -27,6 +27,7 @@ class Pages extends My_Controller {
                                     ->get()->result();
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = "Página inicial";
+
         $this->load->view('header/header' , $data);                           
         $this->load->view('pagina');
         $this->load->view('footer/footer');

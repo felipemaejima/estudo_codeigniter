@@ -13,28 +13,6 @@
             text-decoration: underline; 
         }
     </style>
-    <script>
-        function validar() { 
-                let form = document.getElementById("login-form");
-                let formData = new FormData(form);
-
-                let ajax = new XMLHttpRequest();
-                ajax.open("POST", "<?php echo site_url('login'); ?>", true);
-                ajax.onreadystatechange = () => {
-                    if (ajax.readyState == 4 && ajax.status == 400) {
-                        let response = JSON.parse(ajax.responseText);
-                        document.querySelector("input[name='csrf_token']").value = response.csrf;
-                        document.querySelector('#erroUser').innerHTML = response.error_user || "" ;
-                        document.querySelector('#erroSenha').innerHTML = response.error_senha || "";
-                    } else if (ajax.readyState == 4 && ajax.status == 200){
-                        let response = JSON.parse(ajax.responseText);
-                        window.location.href = response.redirect;
-                    }
-                };
-                
-                ajax.send(formData);
-        }
-    </script>
 </head>
 <body>
     <!-- <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
@@ -94,5 +72,3 @@
     echo form_close();
     ?>
     </div>
-</body>
-</html>

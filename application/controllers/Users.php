@@ -11,7 +11,7 @@ class Users extends My_Controller {
 
     public function setUser() {
         if ($this->session->userdata('user_id')) {
-            redirect('index');
+            redirect('');
         }
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $this->form_validation->set_rules('nome' , 'Nome', 'required');
@@ -44,14 +44,15 @@ class Users extends My_Controller {
                     list($row) = $newUser;
                     $this->session->set_userdata('user_id', $row->id); 
                     echo json_encode([
-                        'redirect' => site_url('index')
+                        'redirect' => site_url('')
                     ]);
                 }
             } 
         } else {
             $data['title'] = "Cadastro";
             $this->load->view('header/header', $data); 
-           $this->load->view('cadastro');
+            $this->load->view('cadastro');
+            $this->load->view('footer/footer');
         }
     }
 
@@ -143,8 +144,10 @@ class Users extends My_Controller {
                                         ->where('id', $id)
                                         ->get()->result();
             $data['title'] = "Editar Usuário";
+
             $this->load->view('header/header', $data); 
             $this->load->view('editar');
+            $this->load->view('footer/footer');
         }
     }
 }

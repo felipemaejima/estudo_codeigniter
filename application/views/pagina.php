@@ -1,3 +1,4 @@
+</head>
 <body>
     <a href="<?php echo site_url('logout'); ?>">Deslogar</a><br>
     <?php list($dadosUser) = $dados_usuario;?>
@@ -25,4 +26,3 @@
         </table>
 
     </div>
-

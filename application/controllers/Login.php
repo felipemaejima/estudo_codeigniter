@@ -8,7 +8,7 @@ class Login extends My_Controller{
     public function __construct() {
         parent::__construct();
         if ($this->session->userdata('user_id')) {
-            redirect('index');
+            redirect('');
         }
     }
 
@@ -37,7 +37,7 @@ class Login extends My_Controller{
                         if (password_verify($senha, $senha_hash)) {   
                             $this->session->set_userdata('user_id', $userdb['id']);
                             echo json_encode([
-                                'redirect' => site_url('index')
+                                'redirect' => site_url('')
                             ]);
                         } else {
                             $this->output->set_status_header(400);
@@ -56,8 +56,10 @@ class Login extends My_Controller{
             }
         } else {
             $data['title'] = "Entrar";
+            
             $this->load->view('header/header', $data);
             $this->load->view('login');
+            $this->load->view('footer/footer');
         }
     }
 }

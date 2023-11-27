@@ -7,30 +7,6 @@
             height: 100vh;
         }
     </style>
-    <script>
-        function editaUsuario(id) {
-        let editForm = document.getElementById('edit-form');    
-        let form = new FormData(editForm);    
-        $.ajax({
-            method: "POST",
-            url: `<?php  echo site_url("edit/");?>${id}`,
-            data: form,
-            processData: false,
-            contentType: false
-        }).done( (res, statusText, jqXHR) => {
-            let response = JSON.parse(res);
-            alert(response.msg);
-            window.location.href = "<?= site_url("index") ?>";
-        }).fail((res, statusText, jsXHR) => { 
-            let response = JSON.parse(res.responseText);
-            $("input[name='csrf_token']").val(response.csrf);
-            $("#erro-user").html(response.error_nome);
-            $("#erro-email").html(response.error_email);
-            $("#erro-senha").html(response.error_senha);
-            $("#erro-cs").html(response.error_cs);
-        });
-    }
-    </script>
 </head>
 <body>
     <div id="edit"  class="container d-flex justify-content-center align-items-center">
@@ -77,7 +53,7 @@
     echo "<br />";
     echo "<br />";
 ?>
-<a class="btn btn-primary" href="<?php echo site_url('index')?>">Voltar</a>
+<a class="btn btn-primary" href="<?php echo site_url('')?>">Voltar</a>
 <?php
     echo form_button([
         'class' => 'btn btn-primary', 
@@ -89,5 +65,6 @@
     echo form_close();
     ?>
     </div>
+    
 </body>
 </html>
