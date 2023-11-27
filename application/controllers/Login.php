@@ -55,6 +55,8 @@ class Login extends My_Controller{
                 }
             }
         } else {
+            $data['title'] = "Entrar";
+            $this->load->view('header/header', $data);
             $this->load->view('login');
         }
     }

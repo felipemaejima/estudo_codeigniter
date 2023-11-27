@@ -9,6 +9,6 @@ class My_Controller extends CI_Controller{
     }
 
     public function my_header($header, $data) {
-
+        
     }
 }

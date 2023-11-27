@@ -49,6 +49,8 @@ class Users extends My_Controller {
                 }
             } 
         } else {
+            $data['title'] = "Cadastro";
+            $this->load->view('header/header', $data); 
            $this->load->view('cadastro');
         }
     }
@@ -140,7 +142,9 @@ class Users extends My_Controller {
                                         ->from('users')
                                         ->where('id', $id)
                                         ->get()->result();
-            $this->load->view('editar', $data);
+            $data['title'] = "Editar Usuário";
+            $this->load->view('header/header', $data); 
+            $this->load->view('editar');
         }
     }
 }
