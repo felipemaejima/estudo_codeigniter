@@ -18,5 +18,6 @@ function cadastrar() {
         $('#erroEmail').html(response.error_email);
         $('#erroSenha').html(response.error_senha);
         $('#erroCs').html(response.error_cs);
+        $('#erroFoto').html(response.error_foto || " ");
     })
 }

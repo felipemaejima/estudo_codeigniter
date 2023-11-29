@@ -14,7 +14,7 @@ class Pages extends My_Controller {
         $offset = $this->uri->segment(1) - 1 ;
         $offset = $offset != null && $offset > 0? $offset * 5 : '';
 
-        $query = $this->db->select('users.nome , users.tipo_usuario as id_tipo , tipos_usuarios.tipo_usuario')
+        $query = $this->db->select('users.nome , users.tipo_usuario as id_tipo , tipos_usuarios.tipo_usuario, users.img_profile_path as caminho_foto')
                         ->from('users')
                         ->join('tipos_usuarios', 'users.tipo_usuario = tipos_usuarios.id', 'left')
                         ->where('users.id', $this->session->userdata('user_id'))
@@ -39,6 +39,7 @@ class Pages extends My_Controller {
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = 'Página Inicial'; 
         $data['scripts'] = ['ajxApaga', 'busca'];
+        $data['styles'] = ['style'];
 
         $this->my_header($data);                         
         $this->load->view('pagina');

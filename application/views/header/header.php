@@ -21,5 +21,5 @@
     if(isset($styles)) {
     foreach($styles as $style) { ?>
         <link rel="stylesheet" href="<?= base_url("assets/css/$style.css");?>">
-    <?php } } ?>
+    <?php } /* fim foreach */ } //fim if ?>
 </head>

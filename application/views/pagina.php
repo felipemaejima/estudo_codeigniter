@@ -1,26 +1,29 @@
-</head>
+<?php list($dadosUser) = $dados_usuario;?>
 <body>
     <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button> -->
-            <div class="navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                    <a class="nav-link" href="<?php echo site_url('logout'); ?>">Sair</a>
-                    </li>
+                    <div class="dropdown ms-3">
+                        <div class="d-flex justify-content-space-between align-items-center">
+                            <div class="circle me-3">
+                                <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                            </div>
+                            <span class="dropdown-toggle"><?php  echo $dadosUser->nome?> </span>
+                        </div>
+                        <div class="dropdown-content">
+                            <a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sair</a>
+                        </div>
+                    </div>
                 </ul>
                 <div class="d-flex">
                     <input id="filtro" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">
-                    <!-- <button class="btn btn-outline-success" type="submit">Buscar</button> -->
                 </div>
             </div>
         </div>
     </nav>
     </header>
-    <?php list($dadosUser) = $dados_usuario;?>
     <br>
     <h3 class="text-center">Olá <?= $dadosUser->nome?>! Vejo que é um <?= $dadosUser->tipo_usuario?>,<br> aqui estão seus dados permitidos:  </h3>
     <br>
@@ -53,8 +56,8 @@
                     $disabledAnt = $paginaAtual == null || $paginaAtual == 1 ? 'disabled' : ' ' ; 
                     $disabledProx = $paginaAtual == ((ceil($total_registros / 5))) ? 'disabled' : ' ' ; 
 
-                    for($cont = 1; $cont <=  ceil($total_registros / 5); $cont++) { ?>
-                        <?php if($cont == 1){ ?>
+                    for($cont = 1; $cont <=  ceil($total_registros / 5); $cont++) {
+                        if($cont == 1){ ?>
                             <li class="page-item <?= $disabledAnt ?>">
                                 <a class="page-link" href="<?= site_url($paginaAtual-1)?>">
                                     <span aria-hidden="true">&laquo;</span>
@@ -70,8 +73,8 @@
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
-                        <?php } ?>
-                    <?php } ?>
+                  <?php }
+                    } ?>
                 </ul>
             </nav>
         </div>

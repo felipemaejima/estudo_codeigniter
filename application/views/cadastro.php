@@ -2,7 +2,7 @@
     <div id="cadastro"  class="container d-flex justify-content-center align-items-center">
     <?php 
     
-    echo form_open('', ['id' => 'cadastro-form']);
+    echo form_open_multipart('', ['id' => 'cadastro-form']);
     
     echo form_label('Nome', 'nome');
     echo form_input([
@@ -28,7 +28,7 @@
     ]);
     echo "<span id='erroSenha' style='color: red;'></span>";
     echo "<br />";
-    echo form_label('Repita a senha', 'senha');
+    echo form_label('Repita a senha', 'confirmacao-senha');
     echo form_password([
     'name' => 'confirmacao-senha',
     'class' => 'form-control'    
@@ -36,7 +36,10 @@
     echo "<span id='erroCs' style='color: red;'></span>";
     echo "<br />";
     ?>
-    <span>Já tem uma conta? <a href="<?php echo site_url('entrar')?>">Entre!</a></span><br>
+    <label for="foto">Foto de Perfil</label>
+    <input class="form-control" name="foto" type="file" id="formFile">
+    <span id='erroFoto' style='color: red;'></span><br/>
+    <span>Já tem uma conta? <a href="<?php echo site_url('entrar')?>">Entre!</a></span><br/>
     <?php 
     echo "<br />";
     echo form_button([

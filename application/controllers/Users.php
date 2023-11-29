@@ -14,29 +14,49 @@ class Users extends My_Controller {
             redirect('');
         }
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $errors = [];
+            $inserir = [];
+
+            $config['upload_path']          = "assets/imgs/";
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+
+            $this->load->library('upload', $config);
+
             $this->form_validation->set_rules('nome' , 'Nome', 'required');
             $this->form_validation->set_rules('email' , 'Email', 'required|is_unique[users.email]|valid_email', [
                 'is_unique' => "E-mail já cadastrado."
             ]);
             $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
             $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
-            if($this->form_validation->run() == FALSE) {
+
+            // print_r($_FILES['foto']['name']);
+            // return ;
+            if($_FILES['foto']['name']) {
+                if(!$this->upload->do_upload('foto')) {
+                    $errors['error_foto'] = $this->upload->display_errors('','');
+                } else { 
+                    $inserir['img_profile_path'] = $config['upload_path'] . $this->upload->data('file_name');
+                } 
+            }  
+
+            if($this->form_validation->run() == FALSE || isset($errors['error_foto'])) {
                 $this->output->set_status_header(400);
                 $this->form_validation->set_error_delimiters('','');
-                echo json_encode([
+                $errors = array_merge($errors, [
                     'error_nome' => form_error('nome'),
                     'error_email' => form_error('email'),
                     'error_senha' => form_error('senha'),
                     'error_cs' => form_error('confirmacao-senha'),
                     'csrf' => $this->security->get_csrf_hash()
                 ]);
+                echo json_encode($errors);
             } else {
-                $inserir = [
+                $inserir = array_merge($inserir, [
                     'nome' => $this->input->post('nome'),
                     'email' => $this->input->post('email'),
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
                     'tipo_usuario' => 3
-                ];
+                ]);
                 $query = $this->db->insert('users', $inserir);
 
                 if($query){

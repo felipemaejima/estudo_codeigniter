@@ -38,7 +38,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['upload_userfile_not_set'] = "Não foi possível encontrar a variável de POST chamada userfile.";
-$lang['upload_file_exceeds_limit'] = "O arquivo enviado excede o valor máximo permitido no arquivo de configuração do PHP.";
+// $lang['upload_file_exceeds_limit'] = "O arquivo enviado excede o valor máximo permitido no arquivo de configuração do PHP.";
+$lang['upload_file_exceeds_limit'] = "O arquivo enviado excede o tamanho máximo permitido.";
 $lang['upload_file_exceeds_form_limit'] = "O arquivo enviado excede o valor máximo permitido pelo formulário.";
 $lang['upload_file_partial'] = "O arquivo foi enviado apenas parcialmente.";
 $lang['upload_no_temp_directory'] = "O diretório temporário não foi encontrado.";
