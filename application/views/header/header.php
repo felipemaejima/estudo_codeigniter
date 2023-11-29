@@ -7,7 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
     <script>
-        // variáveis necessárias para o uso das funções
+        // variáveis/constantes necessárias para o uso das funções
         const nameCsrf = "<?= $this->security->get_csrf_token_name(); ?>";
         let token = "<?= $this->security->get_csrf_hash(); ?>";
         const urlDelete = "<?= site_url('delete')?>";
@@ -15,6 +15,7 @@
         const urlLogin = "<?= site_url('login');?>";
         const urlEdit = "<?= site_url('edit');?>" ;
         const urlIndex = "<?= site_url('')?>";
+        const urlBusca = "<?= site_url('getuser'); ?> ";
     </script>
     <?php
     if(isset($styles)) {
@@ -22,6 +23,3 @@
         <link rel="stylesheet" href="<?= base_url("assets/css/$style.css");?>">
     <?php } } ?>
 </head>
-<header>
-
-</header>    

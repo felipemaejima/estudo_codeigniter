@@ -2,8 +2,7 @@ function apagaUsuario(id) {
     let confirm = window.confirm("Tem certeza que deseja apagar o usuário? ");
     if (confirm) {
         let form = new FormData();
-        form.append(nameCsrf, token)
-        form.append('id', id);
+        form.append(nameCsrf, token);
         $.ajax({
             method: "POST",
             url: `${urlDelete}/${id}`,

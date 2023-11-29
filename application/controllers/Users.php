@@ -151,7 +151,7 @@ class Users extends My_Controller {
             $data = array_merge($data, [
                 'title' => 'Editar Usuário', 
                 'scripts' => ['ajxEdita'],
-                'style' => ['style']
+                'styles' => ['style']
             ]);
             $this->my_header($data);
             $this->load->view('editar');

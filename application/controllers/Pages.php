@@ -11,23 +11,34 @@ class Pages extends My_Controller {
         }
     }
     public function index() {
+        $offset = $this->uri->segment(1) - 1 ;
+        $offset = $offset != null && $offset > 0? $offset * 5 : '';
+
         $query = $this->db->select('users.nome , users.tipo_usuario as id_tipo , tipos_usuarios.tipo_usuario')
                         ->from('users')
                         ->join('tipos_usuarios', 'users.tipo_usuario = tipos_usuarios.id', 'left')
                         ->where('users.id', $this->session->userdata('user_id'))
                         ->get()->result();
-        list($row) = $query;          
-        // $this->session->set_userdata('user_tipo', $row->id_tipo);      
+        list($row) = $query;                
         $data['dados_usuario'] = $query; 
-        $dadosPermitidos = $this->db->select('id , nome, email, tipo_usuario')
+        $dadosPermitidos = $this->db->select('id , nome, email')
                                     ->from('users')
                                     ->where('tipo_usuario >', $row->id_tipo )
                                     ->where('st_usuario', 1)
                                     ->or_where('id' , $this->session->userdata('user_id'))
-                                    ->get()->result();
+                                    ->limit(5,$offset)
+                                    ->order_by('nome')
+                                    ->get()->result();    
+                                 
+        $countRegistros = $this->db->from('users') 
+                                    ->where('tipo_usuario >', $row->id_tipo )
+                                    ->where('st_usuario', 1)
+                                    ->or_where('id' , $this->session->userdata('user_id'))
+                                    ->count_all_results();
+        $data['total_registros'] = $countRegistros;
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = 'Página Inicial'; 
-        $data['scripts'] = ['ajxApaga'];
+        $data['scripts'] = ['ajxApaga', 'busca'];
 
         $this->my_header($data);                         
         $this->load->view('pagina');
