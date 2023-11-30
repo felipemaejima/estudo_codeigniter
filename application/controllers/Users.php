@@ -101,8 +101,8 @@ class Users extends My_Controller {
             
             // Apagando com coluna st_usuario (0 ou 1)    
             $del = $this->db->set('st_usuario', 0)
-                     ->where('id', $id)
-                     ->update('users');      
+                            ->where('id', $id)
+                            ->update('users');      
             if($del) { 
                 echo json_encode([
                     'msg' => "Registro apagado com sucesso!",
@@ -177,5 +177,28 @@ class Users extends My_Controller {
             $this->load->view('editar');
             $this->load->view('footer/footer');
         }
+    }
+
+    public function editprofile() { 
+        if (!$this->session->userdata('user_id')) {
+            redirect('entrar');
+        } 
+        if($this->input->server('REQUEST_METHOD') == 'POST') {
+            
+        }else { 
+            $data['profile_data'] = $this->db->select("nome, email, img_profile_path as caminho_foto ")
+                                        ->from('users')
+                                        ->where('id', $this->session->userdata('user_id'))
+                                        ->get()->result();
+            $data = array_merge($data, [
+                'title' => 'Editar Perfil',
+                'styles' => ['style']
+            ]);
+            $this->my_header($data);
+            $this->load->view('editarperfil');
+            $this->load->view('footer/footer');
+        }
+
+        
     }
 }

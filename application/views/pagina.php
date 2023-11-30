@@ -8,7 +8,9 @@
                     <div class="dropdown ms-3">
                         <div class="d-flex justify-content-space-between align-items-center">
                             <div class="circle me-3">
-                                <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                                <a href="<?= base_url('editprofile')?>">
+                                    <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                                </a>
                             </div>
                             <span class="dropdown-toggle"><?php  echo $dadosUser->nome?> </span>
                         </div>

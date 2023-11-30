@@ -1,11 +1,18 @@
+<?php list($user) = $profile_data; ?>
 <body>
-    <div id="edit"  class="container d-flex justify-content-center align-items-center">
-    
+    <div id="edit-profile"  class="container d-flex justify-content-center align-items-center"> 
+           
     <?php 
-    list($user) = $edit_user;
     
-    echo form_open('', ['id' => 'edit-form']);
-    
+    echo form_open('', ['id' => 'edit-profile-foto']); ?>
+
+    <div class="circle-edit mx-auto mb-3">
+            <a href="<?= base_url('editprofile')?>">
+                <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+            </a>
+        </div> 
+
+    <?php 
     echo form_label('Usuário', 'user');
     echo form_input([
     'name' => 'user', 
@@ -47,7 +54,6 @@
 <?php
     echo form_button([
         'class' => 'btn btn-primary', 
-        'onclick' => "editaUsuario($user->id)",
         'content' => 'Editar'
 
     ]);

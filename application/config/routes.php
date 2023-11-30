@@ -58,3 +58,4 @@ $route['entrar'] = 'login';
 $route['logout'] = 'logout';
 $route['delete/(:num)'] = 'users/deleteuser';
 $route['edit/(:any)'] = 'users/edituser';
+$route['editprofile'] = 'users/editprofile';
