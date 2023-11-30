@@ -133,7 +133,7 @@ class Users extends My_Controller {
                 $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
                 $attData['senha'] = $this->input->post('senha'); 
             }
-            
+
             if($this->form_validation->run() == FALSE) {
                 $this->output->set_status_header(400);
                 $this->form_validation->set_error_delimiters('','');
@@ -184,7 +184,66 @@ class Users extends My_Controller {
             redirect('entrar');
         } 
         if($this->input->server('REQUEST_METHOD') == 'POST') {
+            $attData = [];
+            $errors = [];
+
+            $config['upload_path']          = "assets/imgs/";
+            $config['allowed_types']        = 'gif|jpg|png|jpeg';
+
+            $this->load->library('upload', $config);
+
+
+            $this->form_validation->set_rules('user' , 'Usuário', 'required');
+            $this->form_validation->set_rules('email' , 'Email', 'required|valid_email', [
+                'is_unique' => "E-mail já cadastrado."
+            ]);
+            if($this->input->post('senha')) { 
+                $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
+                $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
+                $attData['senha'] = $this->input->post('senha'); 
+            }
             
+            if($_FILES['foto']['name']) {
+                if(!$this->upload->do_upload('foto')) {
+                    $errors['error_foto'] = $this->upload->display_errors('','');
+                } else { 
+                    $attData['img_profile_path'] = $config['upload_path'] . $this->upload->data('file_name');
+                } 
+            } 
+
+            if($this->form_validation->run() == FALSE || isset($errors['error_foto'])) {
+                $this->output->set_status_header(400);
+                $this->form_validation->set_error_delimiters('','');
+                $errors = array_merge($errors, [
+                    'error_nome' => form_error('nome'),
+                    'error_email' => form_error('email'),
+                    'error_senha' => form_error('senha'),
+                    'error_cs' => form_error('confirmacao-senha'),
+                    'csrf' => $this->security->get_csrf_hash()
+                ]);
+                echo json_encode($errors);
+            } else { 
+                $query = $this->db->select('img_profile_path as caminho_antigo')->from('users')->where('id', $this->session->userdata('user_id'))->get()->result();
+                list($old) = $query;
+                unlink($old->caminho_antigo);
+                $attData = array_merge($attData, [
+                    'nome' => $this->input->post('user'),
+                    'email' => $this->input->post('email') 
+                ]);
+                $att = $this->db->set($attData)
+                ->where('id', $this->session->userdata('user_id'))
+                ->update('users');      
+                if($att) { 
+                    echo json_encode([
+                        'msg' => "Registro editado com sucesso!",
+                    ]);
+                } else { 
+                    echo json_encode([
+                        'msg' => "O registro não foi editado!",
+                        'csrf' => $this->security->get_csrf_hash()
+                    ]);
+                }
+            }
         }else { 
             $data['profile_data'] = $this->db->select("nome, email, img_profile_path as caminho_foto ")
                                         ->from('users')
@@ -192,7 +251,8 @@ class Users extends My_Controller {
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Perfil',
-                'styles' => ['style']
+                'styles' => ['style'],
+                'scripts' => ['ajxEdita']
             ]);
             $this->my_header($data);
             $this->load->view('editarperfil');

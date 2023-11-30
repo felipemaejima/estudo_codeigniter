@@ -71,12 +71,35 @@ a:hover {
   .circle img {
     position: absolute;
     bottom: 0;
-    width: 100%;
+    /* width: 100%; */
+    width: 50px;
+    height: 50px;
+  }
+
+  .circle-users {
+    background-color: #aaa;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .circle-users img {
+    position: absolute;
+    left: 0;
+    /* width: 100%; */
+    width: 40px;
+    height: 40px;
   }
 
   /* formatações da view editar perfil */
   .circle-edit {
     background-color: #aaa;
+    background-image: url('https://cdn-icons-png.flaticon.com/512/83/83574.png');
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: center;
     border-radius: 50%;
     width: 200px;
     height: 200px;
@@ -86,10 +109,23 @@ a:hover {
   
   .circle-edit img {
     position: absolute;
-    bottom: 0;
-    width: 100%;
+    top: 0;
+    width: 200px;
+    height:200px;
+    object-fit: cover;
   }
 
   #edit-profile{ 
     height: 100vh;
+  }
+  #profile{ 
+    margin: auto;
+  }
+  #profile:hover {
+    opacity: 0.25;
+    transition: opacity 0.1s linear;
+    cursor: pointer;
+  }
+  #form-file-edit {
+    display: none;
   }

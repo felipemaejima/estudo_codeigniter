@@ -39,7 +39,14 @@
         <?php
         foreach($dados_permitidos as $user) {?> 
             <tr id="user<?=$user->id?>">
-                <td><?= $user->nome ?></td>
+                <td>
+                    <div class="d-flex justify-content-space-between align-items-center">
+                        <div class="circle-users me-4">
+                                <img id="profile-user" src="<?= $user->caminho_user ? base_url($user->caminho_user) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                        </div>
+                        <?= $user->nome ?>
+                    </div>
+                </td>
                 <td><?= $user->email ?></td>
                 <?php if ($dadosUser->id_tipo == 1) { ?>
                 <td>
