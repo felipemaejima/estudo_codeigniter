@@ -164,7 +164,7 @@ class Users extends My_Controller {
                 }
             }
         }else { 
-            $data['edit_user'] = $this->db->select("id , nome, email")
+            $data['edit_user'] = $this->db->select("id , nome, email, img_profile_path as caminho_foto")
                                         ->from('users')
                                         ->where('id', $id)
                                         ->get()->result();

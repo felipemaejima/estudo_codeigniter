@@ -4,8 +4,15 @@
     <?php 
     list($user) = $edit_user;
     
-    echo form_open('', ['id' => 'edit-form']);
-    
+    echo form_open('', ['id' => 'edit-form']); ?>
+        <div class="d-flex justify-content-center">
+            <label for="foto" class="circle-edit mb-3" onclick="selecionaFoto()">
+                <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+            </label> 
+            <input onchange="readURL()" name="foto" type="file" id="form-file-edit">
+        </div>
+        <span id='erro-foto' style='color: red;'></span><br>
+    <?php 
     echo form_label('Usuário', 'user');
     echo form_input([
     'name' => 'user', 
