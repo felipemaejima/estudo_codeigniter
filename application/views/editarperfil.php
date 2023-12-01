@@ -5,14 +5,17 @@
     <?php 
     
     echo form_open('', ['id' => 'edit-profile-form']); ?>
-    <div class="d-flex justify-content-center">
-        <label for="foto" class="circle-edit mb-3" onclick="selecionaFoto()">
+    <div class="d-flex justify-content-center ">
+        <label for="foto" class="circle-edit mb-3 filter" onclick="selecionaFoto()">
             <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
         </label> 
-        <input onchange="readURL()" name="foto" type="file" id="form-file-edit">
+        <input  name="foto" type="file" id="form-file-edit">
     </div>
     <span id='erro-foto' style='color: red;'></span><br>
-
+    <label for="blur-range" class="form-label">Blur</label>
+    <input onchange="blurImage()" min="0" max="30" type="range" class="form-range" id="blur-range">
+    <label for="exampleColorInput" class="form-label">Cor</label>
+    <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
     <?php 
     echo form_label('Usuário', 'user');
     echo form_input([

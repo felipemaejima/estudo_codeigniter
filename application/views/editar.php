@@ -4,6 +4,14 @@
     <?php 
     list($user) = $edit_user;
     
+    if($user->tipo_documento == 1){ 
+        $Doc = floatval($user->doc);
+        $Doc = number_format($Doc, 0, '', '.').'-'.substr($Doc, -2);
+    } else if($user->tipo_documento == 2){ 
+        $Doc = $user->doc;
+        $Doc = substr($Doc, 0, 2).'.'.substr($Doc, 2, 3).'.'.substr($Doc, 5, 3).'/'.substr($Doc, 8, 4).'-'.substr($Doc, -2);
+    }
+    
     echo form_open('', ['id' => 'edit-form']); ?>
         <div class="d-flex justify-content-center">
             <label for="foto" class="circle-edit mb-3" onclick="selecionaFoto()">
@@ -48,6 +56,30 @@
     ]);
     echo "<span id='erro-cs' style='color: red;'></span>";
     echo "<br />";
+
+    $selectedCpf = $user->tipo_documento == 1 ? 'selected' : ' '; 
+    $selectedCnpj = $user->tipo_documento == 2 ? 'selected' : ' ';  
+    ?>
+    <label for="tipo-documento">Tipo Documento</label>
+    <div class="input-group mb-3">
+            <select name='tipo-documento' onchange="mascaraDoc()" class="form-select" id="tipo-documento">
+                <option <?= $selectedCpf ?> value="1">CPF</option>
+                <option <?= $selectedCnpj ?> value="2">CNPJ</option>
+            </select>
+    </div>
+    <?php
+
+    echo form_label('Documento', 'doc-cpf-cnpj');
+    echo form_input([
+    'name' => 'doc-cpf-cnpj',
+    'id' => 'doc-cpf-cnpj',
+    'class' => 'form-control',
+    'value' => $Doc ,
+    'onfocus' => 'mascaraDoc()' 
+    ]);
+    echo "<span id='erro-doc' style='color: red;'></span>";
+    echo "<br />";
+
     echo "<br />";
 ?>
 <a class="btn btn-primary" href="<?php echo site_url('')?>">Voltar</a>

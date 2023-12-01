@@ -28,9 +28,9 @@ class Users extends My_Controller {
             ]);
             $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
             $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
+            $this->form_validation->set_rules('doc-cpf-cnpj' , 'Documento', 'required|min_length[14]');
 
-            // print_r($_FILES['foto']['name']);
-            // return ;
+      
             if($_FILES['foto']['name']) {
                 if(!$this->upload->do_upload('foto')) {
                     $errors['error_foto'] = $this->upload->display_errors('','');
@@ -47,6 +47,7 @@ class Users extends My_Controller {
                     'error_email' => form_error('email'),
                     'error_senha' => form_error('senha'),
                     'error_cs' => form_error('confirmacao-senha'),
+                    'error_doc' => form_error('doc-cpf-cnpj'),
                     'csrf' => $this->security->get_csrf_hash()
                 ]);
                 echo json_encode($errors);
@@ -55,7 +56,9 @@ class Users extends My_Controller {
                     'nome' => $this->input->post('nome'),
                     'email' => $this->input->post('email'),
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
-                    'tipo_usuario' => 3
+                    'tipo_usuario' => 3,
+                    'tipo_documento' => $this->input->post('tipo-documento'),
+                    'doc_cpf_cnpj' => preg_replace("/[^0-9]/", "", $this->input->post('doc-cpf-cnpj'))
                 ]);
                 $query = $this->db->insert('users', $inserir);
 
@@ -71,7 +74,7 @@ class Users extends My_Controller {
         } else {
             $this->my_header([
                 'title' => "Cadastro", 
-                'scripts' => ['ajxCadastra'], 
+                'scripts' => ['ajxCadastra','mascaras'], 
                 'styles' => ['style']
             ]);
             $this->load->view('cadastro');
@@ -164,13 +167,13 @@ class Users extends My_Controller {
                 }
             }
         }else { 
-            $data['edit_user'] = $this->db->select("id , nome, email, img_profile_path as caminho_foto")
+            $data['edit_user'] = $this->db->select("id , nome, email, img_profile_path as caminho_foto, doc_cpf_cnpj as doc,tipo_documento")
                                         ->from('users')
                                         ->where('id', $id)
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Usuário', 
-                'scripts' => ['ajxEdita'],
+                'scripts' => ['ajxEdita','mascaras'],
                 'styles' => ['style']
             ]);
             $this->my_header($data);
