@@ -5,8 +5,9 @@
     list($user) = $edit_user;
     
     if($user->tipo_documento == 1){ 
-        $Doc = floatval($user->doc);
-        $Doc = number_format($Doc, 0, '', '.').'-'.substr($Doc, -2);
+        $Doc = preg_replace("/[^0-9]/", "", $user->doc);
+        $Doc = str_pad($Doc, 11, '0', STR_PAD_LEFT);
+        $Doc = preg_replace("/^(\d{3})(\d{3})(\d{3})(\d{2})$/", "\$1.\$2.\$3-\$4", $Doc);
     } else if($user->tipo_documento == 2){ 
         $Doc = $user->doc;
         $Doc = substr($Doc, 0, 2).'.'.substr($Doc, 2, 3).'.'.substr($Doc, 5, 3).'/'.substr($Doc, 8, 4).'-'.substr($Doc, -2);
@@ -17,7 +18,7 @@
             <label for="foto" class="circle-edit mb-3" onclick="selecionaFoto()">
                 <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
             </label> 
-            <input onchange="readURL()" name="foto" type="file" id="form-file-edit">
+            <input name="foto" type="file" id="form-file-edit">
         </div>
         <span id='erro-foto' style='color: red;'></span><br>
     <?php 
@@ -74,8 +75,8 @@
     'name' => 'doc-cpf-cnpj',
     'id' => 'doc-cpf-cnpj',
     'class' => 'form-control',
-    'value' => $Doc ,
-    'onfocus' => 'mascaraDoc()' 
+    'value' => $Doc 
+    // 'onchange' => 'mascaraDoc()' 
     ]);
     echo "<span id='erro-doc' style='color: red;'></span>";
     echo "<br />";

@@ -50,6 +50,7 @@
     <?php 
     echo form_label('Documento', 'doc-cpf-cnpj');
     echo form_input([    
+    'disabled' => " ",    
     'placeholder' => 'Escolha o tipo do documento',
     'name' => 'doc-cpf-cnpj',
     'id' => 'doc-cpf-cnpj',

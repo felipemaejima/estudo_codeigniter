@@ -18,6 +18,7 @@ function editaUsuario(id) {
         $("#erro-email").html(response.error_email);
         $("#erro-senha").html(response.error_senha);
         $("#erro-cs").html(response.error_cs);
+        $('#erro-doc').html(response.error_doc);
     });
 }
 

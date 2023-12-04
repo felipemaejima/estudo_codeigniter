@@ -2,7 +2,7 @@ function mascaraDoc() {
     let tipodoc = $('#tipo-documento').val();
     if (tipodoc == 2 ){ 
         document.getElementById('doc-cpf-cnpj').disabled = false;
-        // document.getElementById('doc-cpf-cnpj').value = "";
+        document.getElementById('doc-cpf-cnpj').value = "";
         document.getElementById('doc-cpf-cnpj').placeholder ='00.000.000/0000-00';
         document.getElementById('doc-cpf-cnpj').maxLength ='17';
         document.getElementById('doc-cpf-cnpj').addEventListener('input', function (e) {
@@ -21,7 +21,7 @@ function mascaraDoc() {
           });
     }else if(tipodoc == 1) { 
         document.getElementById('doc-cpf-cnpj').disabled = false;
-        // document.getElementById('doc-cpf-cnpj').value = "";
+        document.getElementById('doc-cpf-cnpj').value = "";
         document.getElementById('doc-cpf-cnpj').placeholder ='000.000.000-00';
         document.getElementById('doc-cpf-cnpj').maxLength ='14';
         document.getElementById('doc-cpf-cnpj').addEventListener('input', function (e) {

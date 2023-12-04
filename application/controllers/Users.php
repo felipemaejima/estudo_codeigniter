@@ -131,6 +131,8 @@ class Users extends My_Controller {
             $this->form_validation->set_rules('email' , 'Email', 'required|valid_email', [
                 'is_unique' => "E-mail já cadastrado."
             ]);
+            $this->form_validation->set_rules('doc-cpf-cnpj' , 'Documento', 'required');
+
             if($this->input->post('senha')) { 
                 $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
                 $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
@@ -145,12 +147,15 @@ class Users extends My_Controller {
                     'error_email' => form_error('email'),
                     'error_senha' => form_error('senha'),
                     'error_cs' => form_error('confirmacao-senha'),
+                    'error_doc' => form_error('doc-cpf-cnpj'),
                     'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else { 
                 $attData = array_merge($attData, [
                     'nome' => $this->input->post('user'),
-                    'email' => $this->input->post('email') 
+                    'email' => $this->input->post('email'),
+                    'tipo_documento' => $this->input->post('tipo-documento'),
+                    'doc_cpf_cnpj' => preg_replace("/[^0-9]/", "", $this->input->post('doc-cpf-cnpj'))
                 ]);
                 $att = $this->db->set($attData)
                 ->where('id', $id)
