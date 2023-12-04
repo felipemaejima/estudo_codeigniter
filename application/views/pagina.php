@@ -19,8 +19,8 @@
                         </div>
                     </div>
                 </ul>
-                <div class="d-flex">
-                    <input id="filtro" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">
+                <div class="d-flex ui-widget">
+                    <input id="filtro" onkeyup="buscaUsuario()" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">          
                 </div>
             </div>
         </div>

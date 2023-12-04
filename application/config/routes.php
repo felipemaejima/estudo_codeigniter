@@ -59,3 +59,4 @@ $route['logout'] = 'logout';
 $route['delete/(:num)'] = 'users/deleteuser';
 $route['edit/(:any)'] = 'users/edituser';
 $route['editprofile'] = 'users/editprofile';
+$route['getuser'] = 'users/getuser';

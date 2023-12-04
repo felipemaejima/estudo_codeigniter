@@ -15,7 +15,7 @@
     <label for="blur-range" class="form-label">Blur</label>
     <input onchange="blurImage()" min="0" max="30" type="range" class="form-range" id="blur-range">
     <label for="exampleColorInput" class="form-label">Cor</label>
-    <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
+    <input type="color" onchange="colorImage()" class="form-control form-control-color" id="color-range" value="#563d7c" title="Choose your color">
     <?php 
     echo form_label('Usuário', 'user');
     echo form_input([

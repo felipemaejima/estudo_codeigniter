@@ -9,6 +9,18 @@ class Users extends My_Controller {
         parent::__construct();
     }
 
+    public function getUser() { 
+        if (!$this->session->userdata('user_id')){
+            redirect('entrar');
+        }
+        $query = $this->db->select('id , nome')->from('users')
+                        ->get()->result();
+        echo json_encode([
+            'result' => $query, 
+            'csrf' => $this->security->get_csrf_hash()
+        ]);         
+    }
+
     public function setUser() {
         if ($this->session->userdata('user_id')) {
             redirect('');
@@ -28,7 +40,17 @@ class Users extends My_Controller {
             ]);
             $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
             $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
-            $this->form_validation->set_rules('doc-cpf-cnpj' , 'Documento', 'required|min_length[14]');
+            if ($this->input->post('tipo-documento') == 1) { 
+                $this->form_validation->set_rules('doc-cpf-cnpj', 'Documento', 'required|min_length[14]', [
+                    'min_length' => "Formato do CPF não é válido!"
+                ]);
+            }else if($this->input->post('tipo-documento') == 2) {
+                $this->form_validation->set_rules('doc-cpf-cnpj', 'Documento', 'required|min_length[18]', [
+                    'min_length' => "Formato do CNPJ não é válido!"
+                ]);
+            } else {
+                $this->form_validation->set_rules('doc-cpf-cnpj' , 'Documento', 'required');
+            }
 
       
             if($_FILES['foto']['name']) {
@@ -137,6 +159,18 @@ class Users extends My_Controller {
                 $this->form_validation->set_rules('senha' , 'Senha', 'required|min_length[6]');
                 $this->form_validation->set_rules('confirmacao-senha' , 'Repita a senha', 'required|matches[senha]');
                 $attData['senha'] = $this->input->post('senha'); 
+            }
+
+            if ($this->input->post('tipo-documento') == 1) { 
+                $this->form_validation->set_rules('doc-cpf-cnpj', 'Documento', 'required|min_length[14]', [
+                    'min_length' => "Formato do CPF não é válido!"
+                ]);
+            }else if($this->input->post('tipo-documento') == 2) {
+                $this->form_validation->set_rules('doc-cpf-cnpj', 'Documento', 'required|min_length[18]', [
+                    'min_length' => "Formato do CNPJ não é válido!"
+                ]);
+            } else {
+                $this->form_validation->set_rules('doc-cpf-cnpj' , 'Documento', 'required');
             }
 
             if($this->form_validation->run() == FALSE) {

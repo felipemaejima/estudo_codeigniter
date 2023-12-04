@@ -1,6 +1,7 @@
 function editaUsuario(id) {
     let editForm = document.getElementById('edit-form');    
     let form = new FormData(editForm);    
+
     $.ajax({
         method: "POST",
         url: `${urlEdit}/${id}`,
@@ -70,4 +71,8 @@ document.getElementById("form-file-edit").addEventListener("change", readImage, 
 function blurImage(){
     let blur = document.getElementById('blur-range').value / 10;
     document.querySelector('.filter').style.filter = `blur(${blur}px)`
+}
+function colorImage(){ 
+    let color = document.getElementById('color-range').value;
+    document.querySelector('.filter').style.color = color;
 }
