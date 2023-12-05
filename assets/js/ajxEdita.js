@@ -51,12 +51,6 @@ function editaPerfil() {
     })
 }
 
-// function readURL() {
-//     let input = document.getElementById('form-file-edit');
-//     $('#profile').attr('src', input.value);
-//     console.log(input.value)
-// }
-
 function readImage() {
     if (this.files && this.files[0]) {
         var file = new FileReader();
@@ -71,8 +65,4 @@ document.getElementById("form-file-edit").addEventListener("change", readImage, 
 function blurImage(){
     let blur = document.getElementById('blur-range').value / 10;
     document.querySelector('.filter').style.filter = `blur(${blur}px)`
-}
-function colorImage(){ 
-    let color = document.getElementById('color-range').value;
-    document.querySelector('.filter').style.color = color;
 }

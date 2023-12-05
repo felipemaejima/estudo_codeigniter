@@ -21,6 +21,18 @@ class Users extends My_Controller {
         ]);         
     }
 
+    public function addEndereco() { 
+        $data = [
+            'title' => 'Adicionar Endereço',
+            'styles' => ['style'],
+            'scripts' => ['ajxCadastra', 'mascaras']
+        ];
+        
+        $this->my_header($data);
+        $this->load->view('endereco'); 
+        $this->load->view('footer/footer');
+    }
+
     public function setUser() {
         if ($this->session->userdata('user_id')) {
             redirect('');
@@ -89,7 +101,7 @@ class Users extends My_Controller {
                     list($row) = $newUser;
                     $this->session->set_userdata('user_id', $row->id); 
                     echo json_encode([
-                        'redirect' => site_url('')
+                        'redirect' => site_url('cadastro/2/')
                     ]);
                 }
             } 

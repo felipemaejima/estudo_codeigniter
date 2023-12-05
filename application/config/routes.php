@@ -54,6 +54,7 @@ $route['(:num)'] = 'pages';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['cadastro']= 'users/setuser';
+$route['cadastro/(:num)']= 'users/addendereco';
 $route['entrar'] = 'login';
 $route['logout'] = 'logout';
 $route['delete/(:num)'] = 'users/deleteuser';

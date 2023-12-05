@@ -43,3 +43,38 @@ function mascaraDoc() {
         document.getElementById('doc-cpf-cnpj').disabled = true;
     }
 }
+
+// mascara cep
+  document.getElementById('cep').addEventListener('input', function (e) {
+      var target = e.target, position = target.selectionStart, length = target.value.length;
+      target.value = target.value.replace(/\D/g, '');
+      target.value = target.value.replace(/(\d{5})(\d{3})$/, '$1-$2');
+    
+      if (e.inputType !== "deleteContentBackward") {
+        position = position === length + 1 ? position : position + 1;
+      }
+    
+      target.setSelectionRange(position, position);
+    });
+
+    // $("#cep").blur( async function (e) {
+    //   let cep = this.value;
+    //   cep = cep.replace(/[^0-9]/g,'')
+    
+    
+    //   await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+    // }    
+async function buscaCep() { 
+  let cep = $('#cep').val();
+  cep = cep.replace(/[^0-9]/g,'')
+  let res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+        .then(res => {
+          return res.json()
+                .then(data => { 
+                   return data;
+                 })
+
+        })  
+  $('#log').val(res.logradouro);
+  $('#bairro').val(res.bairro); 
+}

@@ -22,3 +22,7 @@ function cadastrar() {
         $('#erroDoc').html(response.error_doc);
     })
 }
+
+function addEndereco() { 
+    
+}
