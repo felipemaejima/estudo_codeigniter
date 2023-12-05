@@ -15,7 +15,7 @@
     ]);
     echo "<span id='erro-cep' style='color: red;'></span>";
     echo "<br />";
-    echo form_label('Logadrouro', 'log');
+    echo form_label('Logradrouro', 'log');
     echo form_input([
     'name' => 'log',
     'id' => 'log',

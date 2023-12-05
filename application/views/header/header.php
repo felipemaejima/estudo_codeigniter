@@ -19,6 +19,7 @@
         const urlIndex = "<?= site_url('')?>";
         const urlBusca = "<?= site_url('getuser'); ?> ";
         const urlEditProf = "<?= site_url('editprofile'); ?>";
+        const urlEndereco = "<?= site_url('addendereco') ?>"
     </script>
     <?php
     if(isset($styles)) {

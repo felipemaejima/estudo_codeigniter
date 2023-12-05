@@ -23,6 +23,45 @@ function cadastrar() {
     })
 }
 
+async function buscaCep() { 
+    let cep = $('#cep').val();
+    cep = cep.replace(/[^0-9]/g,'')
+    let res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          .then(res => {
+            return res.json()
+                  .then(data => { 
+                     return data;
+                   })
+  
+          }).catch((err)=> {
+            console.log(err)
+          });
+    if(res.erro){ 
+        $('#erro-cep').html('O CEP não é válido');
+    }else { 
+        $('#log').val(res.logradouro);
+        $('#bairro').val(res.bairro); 
+    }
+  }
+
 function addEndereco() { 
-    
+    let end = document.getElementById("endereco-form");
+    let form = new FormData(end);
+    $.ajax({
+        method: "POST", 
+        url: urlEndereco, 
+        data: form, 
+        processData: false,
+        contentType: false
+    }).done((res) => { 
+        console.log(res)
+        let response = JSON.parse(res);
+        window.location.href = response.redirect;
+    }).fail((res) => { 
+        let response = JSON.parse(res.responseText);
+        $("input[name='csrf_token']").val(response.csrf);
+        $('#erro-cep').html(response.error_cep);
+        $('#erro-log').html(response.error_log);
+        $('#erro-bairro').html(response.error_bairro);
+    })
 }

@@ -22,15 +22,58 @@ class Users extends My_Controller {
     }
 
     public function addEndereco() { 
-        $data = [
-            'title' => 'Adicionar Endereço',
-            'styles' => ['style'],
-            'scripts' => ['ajxCadastra', 'mascaras']
-        ];
-        
-        $this->my_header($data);
-        $this->load->view('endereco'); 
-        $this->load->view('footer/footer');
+        if (!$this->session->userdata('user_id')){
+            redirect('entrar');
+        }
+        if ($this->input->server('REQUEST_METHOD') == 'POST') {
+            $endData = [];
+            $errors = [];
+            $this->form_validation->set_rules('cep', 'CEP', 'required|min_length[9]', [
+                    'min_length' => 'O formato do CEP não é válido!'
+            ]); 
+            
+            $this->form_validation->set_rules('log', 'Logradouro', 'required'); 
+            $this->form_validation->set_rules('bairro', 'Bairro', 'required');
+
+            if($this->input->post('num')){
+                $endData['numero'] = $this->input->post('num');
+            }
+            if($this->form_validation->run() == FALSE) {
+                $this->output->set_status_header(400);
+                $this->form_validation->set_error_delimiters('','');
+                
+                echo json_encode([
+                    'error_cep' => form_error('cep'),
+                    'error_log' => form_error('log'),
+                    'error_bairro' => form_error('bairro'),
+                    'csrf' => $this->security->get_csrf_hash()
+                ]);
+            } else { 
+                $endData = array_merge($endData, [
+                    'id_user' => $this->session->userdata('user_id'),
+                    'cep' => preg_replace("/[^0-9]/", "", $this->input->post('cep')),
+                    'logradouro' => $this->input->post('log'),
+                    'bairro' => $this->input->post('bairro')
+                ]);
+                $query = $this->db->insert('users_enderecos', $endData);
+
+                if($query){
+                    echo json_encode([
+                        'redirect' => site_url('')
+                    ]);
+                }
+            }
+        }else {
+            $data = [
+                'title' => 'Adicionar Endereço',
+                'styles' => ['style'],
+                'scripts' => ['ajxCadastra', 'mascaras']
+            ];
+            
+            $this->my_header($data);
+            $this->load->view('endereco'); 
+            $this->load->view('footer/footer');
+        }
     }
 
     public function setUser() {

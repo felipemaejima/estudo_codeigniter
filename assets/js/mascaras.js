@@ -57,24 +57,3 @@ function mascaraDoc() {
       target.setSelectionRange(position, position);
     });
 
-    // $("#cep").blur( async function (e) {
-    //   let cep = this.value;
-    //   cep = cep.replace(/[^0-9]/g,'')
-    
-    
-    //   await fetch(`https://viacep.com.br/ws/${cep}/json/`)
-    // }    
-async function buscaCep() { 
-  let cep = $('#cep').val();
-  cep = cep.replace(/[^0-9]/g,'')
-  let res = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(res => {
-          return res.json()
-                .then(data => { 
-                   return data;
-                 })
-
-        })  
-  $('#log').val(res.logradouro);
-  $('#bairro').val(res.bairro); 
-}
