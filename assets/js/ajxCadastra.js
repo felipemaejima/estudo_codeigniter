@@ -33,11 +33,11 @@ async function buscaCep() {
                      return data;
                    })
   
-          }).catch((err)=> {
-            console.log(err)
           });
     if(res.erro){ 
         $('#erro-cep').html('O CEP não é válido');
+        $('#log').val(" ");
+        $('#bairro').val(" "); 
     }else { 
         $('#log').val(res.logradouro);
         $('#bairro').val(res.bairro); 

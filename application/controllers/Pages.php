@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once 'My_Controller.php';
 
-class Pages extends My_Controller {
+
+class Pages extends MY_Controller {
     public function __construct(){
         parent::__construct(); 
         if(!$this->session->userdata('user_id')) { 
