@@ -65,3 +65,26 @@ $(document).ready(function(){
         }
       });
   }
+  async function getRepos(username, id ){
+    let container = document.getElementById(`content${id}`); 
+    if (!username) { 
+      return container.innerHTML = "Não há repositórios.";
+    }
+    await fetch(`https://api.github.com/users/${username}/repos`).then(res => res.json())
+      .then(data => { 
+        if (data.message && data.message == 'Not Found'){ 
+          return container.innerHTML = "Repositório não encontrado."
+        }
+        container.innerHTML = "";
+        data.forEach((value) => { 
+          let link = document.createElement('a'); 
+          link.className = "btn btn-primary m-2"; 
+          link.target ="_blank";
+          link.href = `https://github.com/${username}/${value.name}`;
+          link.textContent = value.name;
+          container.appendChild(link);
+        })
+      }).catch((err) => { 
+        console.log(err)
+      })
+  }

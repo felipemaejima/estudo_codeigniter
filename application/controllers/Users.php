@@ -135,7 +135,8 @@ class Users extends MY_Controller {
                     'senha' => password_hash($this->input->post('senha'), PASSWORD_DEFAULT),
                     'tipo_usuario' => 3,
                     'tipo_documento' => $this->input->post('tipo-documento'),
-                    'doc_cpf_cnpj' => preg_replace("/[^0-9]/", "", $this->input->post('doc-cpf-cnpj'))
+                    'doc_cpf_cnpj' => preg_replace("/[^0-9]/", "", $this->input->post('doc-cpf-cnpj')),
+                    'repo_username' => $this->input->post('usergithub')
                 ]);
                 $query = $this->db->insert('users', $inserir);
 

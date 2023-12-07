@@ -21,7 +21,7 @@ class Pages extends MY_Controller {
                         ->get()->result();
         list($row) = $query;                
         $data['dados_usuario'] = $query; 
-        $dadosPermitidos = $this->db->select('id , nome, email, img_profile_path as caminho_user')
+        $dadosPermitidos = $this->db->select('id , nome, email, img_profile_path as caminho_user, repo_username')
                                     ->from('users')
                                     ->where('tipo_usuario >', $row->id_tipo )
                                     ->where('st_usuario', 1)

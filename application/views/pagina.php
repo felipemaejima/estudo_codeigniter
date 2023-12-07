@@ -55,6 +55,23 @@
                 </td>
                <?php } ?>    
             </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                               <button onclick="getRepos('<?=$user->repo_username;?>' , <?=$user->id;?>)"  class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?=$user->id?>" aria-expanded="false" aria-controls="collapseTwo">
+                                    Repositórios
+                               </button>
+                            </h2>
+                        <div id="collapse<?=$user->id?>" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div id="content<?=$user->id?>" class="accordion-body justify-content-space-between">
+                            .   .   .
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
             <?php } ?>
         </table>
         <div class="d-flex justify-content-center">

@@ -57,6 +57,14 @@
     'class' => 'form-control'
     ]);
     echo "<span id='erroDoc' style='color: red;'></span>";
+    echo "<br />";
+    echo form_label('Usuario Github', 'usergithub');
+    echo form_input([
+    'name' => 'usergithub', 
+    'type' => 'text',
+    'class' => 'form-control'  ,
+    'value' => !!$this->input->post('usergithub') ? $this->input->post('usergithub') : ""  
+    ]);
     ?>
     <br />
     <span>Já tem uma conta? <a href="<?php echo site_url('entrar')?>">Entre!</a></span><br/>
