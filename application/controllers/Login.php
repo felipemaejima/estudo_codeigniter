@@ -8,7 +8,7 @@ class Login extends MY_Controller{
     public function __construct() {
         parent::__construct();
         if ($this->session->userdata('user_id')) {
-            redirect('');
+            redirect(base_url());
         }
     }
 
@@ -60,7 +60,7 @@ class Login extends MY_Controller{
             $data = [
                 'title' => "Entrar", 
                 'scripts' => ['login'],
-                'styles' => ['style']
+                'styles' => ['login']
             ]; 
             $this->my_header($data);
             $this->load->view('login');

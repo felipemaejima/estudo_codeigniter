@@ -72,4 +72,3 @@
     echo form_close();
     ?>
     </div>
-    <script> window.onload = mascaraDoc();</script>

@@ -7,7 +7,7 @@ class Pages extends MY_Controller {
     public function __construct(){
         parent::__construct(); 
         if(!$this->session->userdata('user_id')) { 
-            redirect('entrar');
+            redirect(base_url('entrar'));
         }
     }
     public function index() {
@@ -39,7 +39,7 @@ class Pages extends MY_Controller {
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = 'Página Inicial'; 
         $data['scripts'] = ['pagina'];
-        $data['styles'] = ['style'];
+        $data['styles'] = ['pagina'];
 
         $this->my_header($data);                         
         $this->load->view('pagina');

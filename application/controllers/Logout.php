@@ -9,7 +9,7 @@ class Logout extends MY_Controller{
         if ($this->session->userdata('user_id')) {
             $this->session->sess_destroy();
         }
-        redirect('entrar');
+        redirect(base_url('entrar'));
     }
 
 }

@@ -11,7 +11,7 @@ class Users extends MY_Controller {
 
     public function getUser() { 
         if (!$this->session->userdata('user_id')){
-            redirect('entrar');
+            redirect(base_url('entrar'));
         }
         $query = $this->db->select('id , nome')->from('users')
                         ->get()->result();
@@ -23,7 +23,7 @@ class Users extends MY_Controller {
 
     public function addEndereco() { 
         if (!$this->session->userdata('user_id')){
-            redirect('entrar');
+            redirect(base_url('entrar'));
         }
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $endData = [];
@@ -66,7 +66,7 @@ class Users extends MY_Controller {
         }else {
             $data = [
                 'title' => 'Adicionar Endereço',
-                'styles' => ['style'],
+                'styles' => ['endereco'],
                 'scripts' => ['endereco']
             ];
             
@@ -78,7 +78,7 @@ class Users extends MY_Controller {
 
     public function setUser() {
         if ($this->session->userdata('user_id')) {
-            redirect('');
+            redirect(base_url(''));
         }
         if ($this->input->server('REQUEST_METHOD') == 'POST') {
             $errors = [];
@@ -152,7 +152,7 @@ class Users extends MY_Controller {
             $this->my_header([
                 'title' => "Cadastro", 
                 'scripts' => ['cadastro'], 
-                'styles' => ['style']
+                'styles' => ['cadastro']
             ]);
             $this->load->view('cadastro');
             $this->load->view('footer/footer');
@@ -161,8 +161,11 @@ class Users extends MY_Controller {
 
     public function deleteUser() { 
         if (!$this->session->userdata('user_id')) {
-            redirect('entrar');
+            redirect(base_url('entrar'));
         } 
+        if ($this->session->userdata('user_tipo_id') != 1){ 
+            redirect(base_url(''));
+        }
         if($this->input->server('REQUEST_METHOD') == 'POST') {
             $id = $this->uri->segment(2);  
             $del = $this->db->set('st_usuario', 0)
@@ -186,7 +189,7 @@ class Users extends MY_Controller {
         if (!$this->session->userdata('user_id')) {
             redirect(base_url('entrar'));
         } 
-        if (!($this->session->userdata('user_tipo_id') == 1)){ 
+        if ($this->session->userdata('user_tipo_id') != 1){ 
             redirect(base_url(''));
         }
         $id = $this->uri->segment(2);
@@ -277,7 +280,7 @@ class Users extends MY_Controller {
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Perfil',
-                'styles' => ['style'],
+                'styles' => ['editar'],
                 'scripts' => ['editar']
             ]);
             $this->my_header($data);
@@ -378,7 +381,7 @@ class Users extends MY_Controller {
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Perfil',
-                'styles' => ['style'],
+                'styles' => ['editarperfil'],
                 'scripts' => ['editarperfil']
             ]);
             $this->my_header($data);
