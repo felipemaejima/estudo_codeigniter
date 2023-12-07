@@ -1,9 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once 'My_Controller.php';
 
-class Login extends My_Controller{ 
+
+class Login extends MY_Controller{ 
     
     public function __construct() {
         parent::__construct();
@@ -18,15 +18,16 @@ class Login extends My_Controller{
             $this->form_validation->set_rules('senha', 'Senha', 'required');
             if ($this->form_validation->run() == FALSE) {
                 $this->output->set_status_header(400);
+                $this->form_validation->set_error_delimiters('','');
                 echo json_encode([
-                    'error_user' => strip_tags(form_error('user')), 
-                    'error_senha' => strip_tags(form_error('senha')),
+                    'error_user' => form_error('user'), 
+                    'error_senha' => form_error('senha'),
                     'csrf' => $this->security->get_csrf_hash()
                 ]);
             } else {
                 $user = $this->input->post('user');
                 $senha = $this->input->post('senha');
-                $userdb = $this->db->select('senha, id')
+                $userdb = $this->db->select('senha, id, tipo_usuario')
                                 ->from('users')
                                 ->where('nome', $user)
                                 ->or_where('email', $user)
@@ -36,6 +37,7 @@ class Login extends My_Controller{
                     $senha_hash = $userdb['senha'];
                         if (password_verify($senha, $senha_hash)) {   
                             $this->session->set_userdata('user_id', $userdb['id']);
+                            $this->session->set_userdata('user_tipo_id', $userdb['tipo_usuario']);
                             echo json_encode([
                                 'redirect' => site_url('')
                             ]);
@@ -57,7 +59,7 @@ class Login extends My_Controller{
         } else {
             $data = [
                 'title' => "Entrar", 
-                'scripts' => ['ajxLogin'],
+                'scripts' => ['login'],
                 'styles' => ['style']
             ]; 
             $this->my_header($data);

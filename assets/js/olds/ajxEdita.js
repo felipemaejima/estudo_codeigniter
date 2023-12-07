@@ -62,7 +62,3 @@ function readImage() {
 }
 document.getElementById("form-file-edit").addEventListener("change", readImage, false);
 
-function blurImage(){
-    let blur = document.getElementById('blur-range').value / 10;
-    document.querySelector('.filter').style.filter = `blur(${blur}px)`
-}

@@ -38,6 +38,8 @@ async function buscaCep() {
           });
     if(res.erro){ 
         $('#erro-cep').html('O CEP não é válido');
+        $('#log').val(" ");
+        $('#bairro').val(" "); 
     }else { 
         $('#log').val(res.logradouro);
         $('#bairro').val(res.bairro); 

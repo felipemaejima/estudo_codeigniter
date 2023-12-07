@@ -1,9 +1,9 @@
 <body>
-    <div id="edit"  class="container d-flex justify-content-center align-items-center">
-    
+    <div id="edit-profile"  class="container d-flex justify-content-center align-items-center"> 
+           
     <?php 
-    list($user) = $edit_user;
-    
+    list($user) = $profile_data;
+    $Doc = '';
     if($user->tipo_documento == 1){ 
         $Doc = preg_replace("/[^0-9]/", "", $user->doc);
         $Doc = str_pad($Doc, 11, '0', STR_PAD_LEFT);
@@ -12,15 +12,15 @@
         $Doc = $user->doc;
         $Doc = substr($Doc, 0, 2).'.'.substr($Doc, 2, 3).'.'.substr($Doc, 5, 3).'/'.substr($Doc, 8, 4).'-'.substr($Doc, -2);
     }
-    
+
     echo form_open('', ['id' => 'edit-form']); ?>
-        <div class="d-flex justify-content-center">
-            <label for="foto" class="circle-edit mb-3" onclick="selecionaFoto()">
-                <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
-            </label> 
-            <input name="foto" type="file" id="form-file-edit">
-        </div>
-        <span id='erro-foto' style='color: red;'></span><br>
+    <div class="d-flex justify-content-center ">
+        <label for="foto" class="circle-edit mb-3 filter" onclick="selecionaFoto()">
+            <img id="profile" src="<?= $user->caminho_foto ? base_url($user->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+        </label> 
+        <input  name="foto" type="file" id="form-file-edit">
+    </div>
+    <span id='erro-foto' style='color: red;'></span><br />
     <?php 
     echo form_label('Usuário', 'user');
     echo form_input([
@@ -58,6 +58,7 @@
     echo "<span id='erro-cs' style='color: red;'></span>";
     echo "<br />";
 
+    
     $selectedCpf = $user->tipo_documento == 1 ? 'selected' : ' '; 
     $selectedCnpj = $user->tipo_documento == 2 ? 'selected' : ' ';  
     ?>
@@ -75,12 +76,10 @@
     'name' => 'doc-cpf-cnpj',
     'id' => 'doc-cpf-cnpj',
     'class' => 'form-control',
-    'value' => $Doc 
-    // 'onchange' => 'mascaraDoc()' 
+    'value' => $Doc
     ]);
     echo "<span id='erro-doc' style='color: red;'></span>";
     echo "<br />";
-
     echo "<br />";
 ?>
 <a class="btn btn-primary" href="<?php echo site_url('')?>">Voltar</a>
@@ -89,7 +88,6 @@
         'class' => 'btn btn-primary', 
         'onclick' => "editaUsuario($user->id)",
         'content' => 'Editar'
-
     ]);
 
     echo form_close();
