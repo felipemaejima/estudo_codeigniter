@@ -22,8 +22,43 @@
         const urlEndereco = "<?= site_url('addendereco') ;?>";
     </script>
     <?php
-    if(isset($styles)) {
-    foreach($styles as $style) { ?>
+    if(isset($styles)) :
+    foreach($styles as $style) : ?>
         <link rel="stylesheet" href="<?= base_url("assets/css/$style.css");?>">
-    <?php } /* fim foreach */ } //fim if ?>
+    <?php endforeach; endif; ?>
 </head>
+
+<?php
+    if (isset($dados_usuario)) {
+            list($dadosUser) = $dados_usuario;
+            ?>
+            <body>
+                <header>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <div class="dropdown ms-3">
+                                    <div class="d-flex justify-content-space-between align-items-center">
+                                        <div class="circle me-3">
+                                            <a href="<?= base_url('editprofile')?>">
+                                                <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                                            </a>
+                                        </div>
+                                        <span class="dropdown-toggle"><?php  echo $dadosUser->nome?> </span>
+                                    </div>
+                                    <div class="dropdown-content">
+                                        <a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sair</a>
+                                    </div>
+                                </div>
+                            </ul>
+                            <?php if (!$this->uri->segment(1) || is_numeric($this->uri->segment(1))) : ?>
+                                <div class="d-flex ui-widget">
+                                    <input id="filtro" onkeyup="buscaUsuario()" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">          
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </nav>
+                </header>
+      <?php }; ?>      

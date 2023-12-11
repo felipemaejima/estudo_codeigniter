@@ -16,38 +16,39 @@
             }
 
             for($cont = $controle; $cont <= $qtdPaginas; $cont++) {
-                if($cont == $controle && $paginaAtual != 1 ){ ?>
+                if($cont == $controle && $paginaAtual != 1 ) : ?>
                     <li class="page-item">
                         <a class="page-link" href="<?= site_url($paginaAtual-1)?>">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                <?php } if ($cont == $controle && $controle > 5) {?>
+                    <?php endif; 
+                     if ($cont == $controle && $controle > 5) :?>
                     <li class="page-item disabled">
                         <a class="page-link" href="#">
                             <span aria-hidden="true">...</span>
                         </a>
                     </li>
-                <?php } ?> 
+                <?php endif; ?> 
                 <li class="page-item <?= $cont == $paginaAtual ? 'disabled' : '' ;?> ">
                     <a class="page-link" href="<?= site_url($cont) ?>"><?= $cont ?></a>
                 </li>
-                <?php if ($cont != $qtdPaginas && $cont == $controle + 4) {?>
+                <?php if ($cont != $qtdPaginas && $cont == $controle + 4) : ?>
                     <li class="page-item disabled">
                         <a class="page-link" href="#">
                             <span aria-hidden="true">...</span>
                         </a>
                     </li>
-                <?php } ?> 
-            <?php if($cont == $controle + 4 && $paginaAtual != $qtdPaginas){ ?>
+                <?php endif; ?> 
+            <?php if($cont == $controle + 4 && $paginaAtual != $qtdPaginas) : ?>
                 <li class="page-item">
                     <a class="page-link" href="<?= site_url($paginaAtual+1)?>">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             <?php 
-                break;
-                    }
+                    break;
+                endif;
             } ?>
         </ul>
     </nav>

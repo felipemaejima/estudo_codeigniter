@@ -9,16 +9,14 @@ class Pages extends MY_Controller {
         if(!$this->session->userdata('user_id')) { 
             redirect(base_url('entrar'));
         }
+        $this->load->model('user');
     }
     public function index() {
         $offset = $this->uri->segment(1) - 1 ;
         $offset = $offset != null && $offset > 0? $offset * 5 : '';
 
-        $query = $this->db->select('users.nome , users.tipo_usuario as id_tipo , tipos_usuarios.tipo_usuario, users.img_profile_path as caminho_foto')
-                        ->from('users')
-                        ->join('tipos_usuarios', 'users.tipo_usuario = tipos_usuarios.id', 'left')
-                        ->where('users.id', $this->session->userdata('user_id'))
-                        ->get()->result();
+        $query = $this->user->get_userdata();
+        
         list($row) = $query;                
         $data['dados_usuario'] = $query; 
         $dadosPermitidos = $this->db->select('id , nome, email, img_profile_path as caminho_user, repo_username')
