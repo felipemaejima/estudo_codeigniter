@@ -37,3 +37,7 @@ function readImage() {
     }
 }
 document.getElementById("form-file-edit").addEventListener("change", readImage, false);
+<<<<<<< HEAD:assets/js/ajxEdita.js
+=======
+
+>>>>>>> main:assets/js/olds/ajxEdita.js
