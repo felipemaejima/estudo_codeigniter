@@ -35,7 +35,7 @@ class Pages extends MY_Controller {
                                     ->where('st_usuario', 1)
                                     ->or_where('id' , $this->session->userdata('user_id'))
                                     ->count_all_results();
-        $data['total_registros'] = $countRegistros;
+        $data['qtdPaginas'] = ceil($countRegistros/5);
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = 'Página Inicial'; 
         $data['scripts'] = ['pagina'];

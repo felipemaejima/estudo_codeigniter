@@ -80,11 +80,21 @@
                     <?php 
                     $paginaAtual = $this->uri->segment(1) ? $this->uri->segment(1) : 1 ;
                     $disabledAnt = $paginaAtual == null || $paginaAtual == 1 ? 'disabled' : ' ' ; 
-                    $disabledProx = $paginaAtual == ceil($total_registros / 5) ? 'disabled' : ' ' ; 
+                    $disabledProx = $paginaAtual == $qtdPaginas ? 'disabled' : ' ' ; 
 
-                    $limitePaginacao = $paginaAtual + 4;
-                    for($cont = $paginaAtual; $cont <= $limitePaginacao; $cont++) {
-                        if($cont == $paginaAtual){ ?>
+                    $controle = 1 ;
+                    $contWhile = 1;
+                    while($contWhile <= ceil($qtdPaginas / 5)){
+                        if($paginaAtual > $contWhile * 5 && $paginaAtual <= ($contWhile * 5) + 5  ) { 
+                            $controle += 5; 
+                        } else { 
+                            break;
+                        }
+                        $contWhile++;
+                    }
+
+                    for($cont = $controle; $cont <= $qtdPaginas; $cont++) {
+                        if($cont == $controle ){ ?>
                             <li class="page-item <?= $disabledAnt ?>">
                                 <a class="page-link" href="<?= site_url($paginaAtual-1)?>">
                                     <span aria-hidden="true">&laquo;</span>
@@ -94,16 +104,22 @@
                         <li class="page-item <?= $cont == $paginaAtual ? 'disabled' : '' ;?> ">
                             <a class="page-link" href="<?= site_url($cont) ?>"><?= $cont ?></a>
                         </li>
-                        <?php if($cont == $limitePaginacao){ ?>
-                            <li class="page-item <?= $disabledProx ?>">
-                                <a class="page-link" href="<?= site_url($paginaAtual+1)?>">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
-                            </li>
-                  <?php }
+                    <?php if($cont == $controle + 4){ ?>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">
+                                <span aria-hidden="true">...</span>
+                            </a>
+                        </li>
+                        <li class="page-item <?= $disabledProx ?>">
+                            <a class="page-link" href="<?= site_url($paginaAtual+1)?>">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    <?php 
+                        break;
+                            }
                     } ?>
                 </ul>
             </nav>
         </div>
-
     </div>
