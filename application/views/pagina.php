@@ -78,12 +78,13 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination">
                     <?php 
-                    $paginaAtual = $this->uri->segment(1);
+                    $paginaAtual = $this->uri->segment(1) ? $this->uri->segment(1) : 1 ;
                     $disabledAnt = $paginaAtual == null || $paginaAtual == 1 ? 'disabled' : ' ' ; 
-                    $disabledProx = $paginaAtual == ((ceil($total_registros / 5))) ? 'disabled' : ' ' ; 
+                    $disabledProx = $paginaAtual == ceil($total_registros / 5) ? 'disabled' : ' ' ; 
 
-                    for($cont = 1; $cont <=  ceil($total_registros / 5); $cont++) {
-                        if($cont == 1){ ?>
+                    $limitePaginacao = $paginaAtual + 4;
+                    for($cont = $paginaAtual; $cont <= $limitePaginacao; $cont++) {
+                        if($cont == $paginaAtual){ ?>
                             <li class="page-item <?= $disabledAnt ?>">
                                 <a class="page-link" href="<?= site_url($paginaAtual-1)?>">
                                     <span aria-hidden="true">&laquo;</span>
@@ -93,7 +94,7 @@
                         <li class="page-item <?= $cont == $paginaAtual ? 'disabled' : '' ;?> ">
                             <a class="page-link" href="<?= site_url($cont) ?>"><?= $cont ?></a>
                         </li>
-                        <?php if($cont == (ceil($total_registros / 5)) ){ ?>
+                        <?php if($cont == $limitePaginacao){ ?>
                             <li class="page-item <?= $disabledProx ?>">
                                 <a class="page-link" href="<?= site_url($paginaAtual+1)?>">
                                     <span aria-hidden="true">&raquo;</span>
