@@ -43,6 +43,7 @@ class Pages extends MY_Controller {
 
         $this->my_header($data);                         
         $this->load->view('pagina');
+        $this->load->view('components/paginacao');
         $this->load->view('footer/footer');
     }
 }
