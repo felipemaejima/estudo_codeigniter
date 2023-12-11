@@ -34,31 +34,32 @@
             ?>
             <body>
                 <header>
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <div class="container-fluid">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                                <div class="dropdown ms-3">
-                                    <div class="d-flex justify-content-space-between align-items-center">
-                                        <div class="circle me-3">
-                                            <a href="<?= base_url('editprofile')?>">
-                                                <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
-                                            </a>
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <div class="dropdown ms-3">
+                                        <div class="d-flex justify-content-space-between align-items-center">
+                                            <div class="circle me-3">
+                                                <a href="<?= base_url('editprofile')?>">
+                                                    <img id="profile" src="<?= $dadosUser->caminho_foto ? base_url($dadosUser->caminho_foto) : base_url("assets/imgs/foto_padrao.png") ; ?>" alt="">
+                                                </a>
+                                            </div>
+                                            <span class="dropdown-toggle"><?php  echo $dadosUser->nome?> </span>
                                         </div>
-                                        <span class="dropdown-toggle"><?php  echo $dadosUser->nome?> </span>
+                                        <div class="dropdown-content">
+                                            <a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sair</a>
+                                        </div>
                                     </div>
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item" href="<?php echo site_url('logout'); ?>">Sair</a>
+                                </ul>
+                                <?php if (!$this->uri->segment(1) || is_numeric($this->uri->segment(1))) : ?>
+                                    <div class="d-flex ui-widget">
+                                        <input id="filtro" onkeyup="buscaUsuario()" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">          
                                     </div>
-                                </div>
-                            </ul>
-                            <?php if (!$this->uri->segment(1) || is_numeric($this->uri->segment(1))) : ?>
-                                <div class="d-flex ui-widget">
-                                    <input id="filtro" onkeyup="buscaUsuario()" class="form-control me-2" type="search" placeholder="Buscar Usuário" aria-label="Search">          
-                                </div>
-                            <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
-                    </div>
-                </nav>
+                    </nav>
                 </header>
+                <br>
       <?php }; ?>      

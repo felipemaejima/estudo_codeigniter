@@ -7,6 +7,7 @@ class Users extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->load->model('user');
     }
 
     public function getUser() { 
@@ -193,6 +194,10 @@ class Users extends MY_Controller {
         if ($this->session->userdata('user_tipo_id') != 1){ 
             redirect(base_url(''));
         }
+
+        $query = $this->user->get_userdata();               
+        $data['dados_usuario'] = $query; 
+
         $id = $this->uri->segment(2);
         if($this->input->server('REQUEST_METHOD') == 'POST') {
             $attData = [];
@@ -281,7 +286,7 @@ class Users extends MY_Controller {
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Perfil',
-                'styles' => ['editar'],
+                'styles' => ['editar','pagina'],
                 'scripts' => ['editar']
             ]);
             $this->my_header($data);
@@ -294,6 +299,10 @@ class Users extends MY_Controller {
         if (!$this->session->userdata('user_id')) {
             redirect(base_url('entrar'));
         } 
+
+        $query = $this->user->get_userdata();               
+        $data['dados_usuario'] = $query; 
+
         $id = $this->session->userdata('user_id');
         if($this->input->server('REQUEST_METHOD') == 'POST') {
             $attData = [];
@@ -382,7 +391,7 @@ class Users extends MY_Controller {
                                         ->get()->result();
             $data = array_merge($data, [
                 'title' => 'Editar Perfil',
-                'styles' => ['editarperfil'],
+                'styles' => ['editarperfil','pagina'],
                 'scripts' => ['editarperfil']
             ]);
             $this->my_header($data);

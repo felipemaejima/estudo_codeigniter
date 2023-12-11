@@ -16,7 +16,7 @@ class Pages extends MY_Controller {
         $offset = $offset != null && $offset > 0? $offset * 5 : '';
 
         $query = $this->user->get_userdata();
-        
+
         list($row) = $query;                
         $data['dados_usuario'] = $query; 
         $dadosPermitidos = $this->db->select('id , nome, email, img_profile_path as caminho_user, repo_username')
@@ -33,6 +33,7 @@ class Pages extends MY_Controller {
                                     ->where('st_usuario', 1)
                                     ->or_where('id' , $this->session->userdata('user_id'))
                                     ->count_all_results();
+                                    
         $data['qtdPaginas'] = ceil($countRegistros/5);
         $data['dados_permitidos'] = $dadosPermitidos; 
         $data['title'] = 'Página Inicial'; 
