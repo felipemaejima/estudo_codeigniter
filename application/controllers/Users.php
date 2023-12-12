@@ -169,11 +169,7 @@ class Users extends MY_Controller {
             redirect(base_url(''));
         }
         if($this->input->server('REQUEST_METHOD') == 'POST') {
-<<<<<<< HEAD
-            $id = $this->uri->segment(2);   
-=======
             $id = $this->uri->segment(2);  
->>>>>>> main
             $del = $this->db->set('st_usuario', 0)
                             ->where('id', $id)
                             ->update('users');      
